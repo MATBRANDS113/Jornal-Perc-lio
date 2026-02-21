@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Jornal Escolar 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="topo">
+        <h1>📰 Jornal da Escola Percílio</h1>
+        <p>Informação, eventos e projetos</p>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#manchete">Início</a></li>
+            <li><a href="#inicio">Eventos</a></li>
+            <li><a href="#galeria">Galeria</a></li>
+            <li><a href="#comentarios">Comentários</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="inicio" class="manchete" id="manchete">
+    <div class="manchete-texto">
+        <h2>Gincana Papa-Tampinha movimenta a escola</h2>
+        <p>Alunos participaram de atividades ecológicas e arrecadação solidária.</p>
+
+        <div id="texto-extra" class="texto-extra">
+            <p>
+                A gincana incentivou a coleta de tampinhas plásticas para reciclagem,
+                promovendo consciência ambiental e trabalho em equipe entre os alunos.
+            </p>
+        </div>
+
+        <button id="btnLerMais">Ler mais</button>
+    </div>
+</section>
+
+<main class="conteudo">
+    <section class="noticias">
+        <a href="ano-letivo.html" class="card-link">
+            <article class="card">
+                <h3>Início do ano letivo 2026</h3>
+                <p>Início do ano letivo de 2026.</p>
+            </article>
+        </a>
+
+        <a href="mostra.html" class="card-link">
+            <article class="card">
+                <h3>Em breve...</h3>
+                <p>Próximos projetos aparecerão aqui.</p>
+            </article>
+        </a>
+    </section>
+
+    <aside class="sidebar">
+        <h3>Em breve...</h3>
+        
+    </aside>
+</main>
+
+<section id="galeria" class="galeria">
+    <h2>Galeria de Fotos</h2>
+    <div class="fotos">
+        <div class="foto">
+            <img src="Captura de tela 2026-02-21 104630.png" alt="Evento escolar 1">
+        </div>
+        <div class="foto">
+            <img src="Captura de tela 2026-02-21 104656.png" alt="Evento escolar 2">
+        </div>
+        <div class="foto">
+            <img src="maxresdefault.jpg" alt="Evento escolar 3">
+        </div>
+    </div>
+</section>
+
+<section id="comentarios" class="comentarios">
+    <h2>Comentários</h2>
+
+    <div id="listaComentarios" class="comentarios-container"></div>
+
+    <form id="formComentario" class="form-comentario">
+        <input type="text" id="nome" placeholder="Seu nome" required>
+        <textarea id="mensagem" placeholder="Escreva seu comentário..." required></textarea>
+        <button type="submit">Enviar comentário</button>
+    </form>
+</section>
+
+<footer>
+    <p>© 2026 Jornal Escolar</p>
+    <p>Desenvolvido pelos alunos do 9º ano</p>
+</footer>
+
+<script>
+const botao = document.getElementById("btnLerMais");
+const texto = document.getElementById("texto-extra");
+
+botao.addEventListener("click", () => {
+    texto.classList.toggle("ativo");
+    botao.textContent = texto.classList.contains("ativo") ? "Ler menos" : "Ler mais";
+});
+
+const form = document.getElementById("formComentario");
+const lista = document.getElementById("listaComentarios");
+
+document.addEventListener("DOMContentLoaded", () => {
+    const comentariosSalvos = JSON.parse(localStorage.getItem("comentarios")) || [];
+    comentariosSalvos.forEach(c => adicionarComentario(c.nome, c.mensagem));
+});
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const nome = document.getElementById("nome").value;
+    const mensagem = document.getElementById("mensagem").value;
+
+    adicionarComentario(nome, mensagem);
+
+    const comentariosSalvos = JSON.parse(localStorage.getItem("comentarios")) || [];
+    comentariosSalvos.push({ nome, mensagem });
+    localStorage.setItem("comentarios", JSON.stringify(comentariosSalvos));
+
+    form.reset();
+});
+
+function adicionarComentario(nome, mensagem) {
+    const div = document.createElement("div");
+    div.classList.add("comentario");
+    div.innerHTML = `<strong>${nome}</strong><p>${mensagem}</p>`;
+    lista.appendChild(div);
+}
+</script>
+
+</body>
+</html>
