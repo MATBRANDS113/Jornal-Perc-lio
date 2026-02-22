@@ -4,19 +4,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jornal Escolar 2026</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header>
-    <div class="topo">
-        <h1>📰 Jornal da Escola Percílio</h1>
+<header >
+    <div class="topo" >
+        <h1> Jornal da Escola Percílio</h1>
         <p>Informação, eventos e projetos</p>
     </div>
-
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
     <nav>
         <ul>
-            <li><a href="#manchete">Início</a></li>
+            <li><a href="#">Início</a></li>
             <li><a href="#inicio">Eventos</a></li>
             <li><a href="#galeria">Galeria</a></li>
             <li><a href="#comentarios">Comentários</a></li>
@@ -25,7 +30,7 @@
     </header>
 
 
-<section id="inicio" class="manchete" id="manchete">
+<section id="inicio" class="manchete" >
     <div class="manchete-texto">
         <h2>Gincana Papa-Tampinha movimenta a escola</h2>
         <p>Alunos participaram de atividades ecológicas e arrecadação solidária.</p>
@@ -134,6 +139,14 @@ function adicionarComentario(nome, mensagem) {
     div.innerHTML = `<strong>${nome}</strong><p>${mensagem}</p>`;
     lista.appendChild(div);
 }
+
+const toggle = document.querySelector(".menu-toggle");
+const nav = document.querySelector("nav");
+
+toggle.addEventListener("click", () => {
+    nav.classList.toggle("active");
+});
+
 </script>
 
 </body>
