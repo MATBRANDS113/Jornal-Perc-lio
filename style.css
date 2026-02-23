@@ -481,7 +481,7 @@ button:hover {
 
 /* Overlay de hover */
 .foto::after {
-    content: '🔍';
+    
     position: absolute;
     inset: 0;
     background: rgba(14,42,58,0.5);
@@ -601,7 +601,9 @@ footer {
     color: white;
     text-align: center;
     padding: 28px 20px;
+    
 }
+
 
 footer p {
     font-size: 13px;
