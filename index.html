@@ -120,23 +120,20 @@
     <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
 </footer>
 
+<!-- Botão ler mais e menu burger (não usa Firebase) -->
 <script>
-    // ─── Botão "Ler mais" ────────────────────────────────────────
     const botao = document.getElementById("btnLerMais");
     const texto = document.getElementById("texto-extra");
-
     botao.addEventListener("click", () => {
         texto.classList.toggle("ativo");
         botao.textContent = texto.classList.contains("ativo") ? "Ler menos" : "Ler mais";
     });
 
-    // ─── Comentários ─────────────────────────────────────────────
+    // ─── Comentários (localStorage) ──────────────────────────────
     const form = document.getElementById("formComentario");
     const lista = document.getElementById("listaComentarios");
-
     const comentariosSalvos = JSON.parse(localStorage.getItem("comentarios")) || [];
     comentariosSalvos.forEach(c => adicionarComentario(c.nome, c.mensagem));
-
     form.addEventListener("submit", function (e) {
         e.preventDefault();
         const nome = document.getElementById("nome").value.trim();
@@ -148,7 +145,6 @@
         localStorage.setItem("comentarios", JSON.stringify(salvos));
         form.reset();
     });
-
     function adicionarComentario(nome, mensagem) {
         const div = document.createElement("div");
         div.classList.add("comentario");
@@ -161,7 +157,41 @@
         lista.appendChild(div);
     }
 
-    // ─── Cards de notícias dos alunos ────────────────────────────
+    // ─── Menu Burger ──────────────────────────────────────────────
+    const toggle = document.querySelector(".menu-toggle");
+    const nav = document.querySelector("nav");
+    const links = document.querySelectorAll("nav a");
+    toggle.addEventListener("click", function () {
+        nav.classList.toggle("active");
+        toggle.classList.toggle("active");
+        document.body.classList.toggle("menu-open");
+    });
+    links.forEach(function (link) {
+        link.addEventListener("click", function () {
+            nav.classList.remove("active");
+            toggle.classList.remove("active");
+            document.body.classList.remove("menu-open");
+        });
+    });
+</script>
+
+<!-- Firebase — cards de notícias -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC4TOGLUFzZ1o5EmvUH63XiWQA1vDxeqps",
+        authDomain: "jornal-percilio.firebaseapp.com",
+        projectId: "jornal-percilio",
+        storageBucket: "jornal-percilio.firebasestorage.app",
+        messagingSenderId: "88179619322",
+        appId: "1:88179619322:web:fa231bd1eea959fee52043"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
     const cardsContainer = document.getElementById("cardsNoticias");
     const noticiasVazio  = document.getElementById("noticiasVazio");
     const gradientes = [
@@ -173,54 +203,6 @@
     ];
     const emojis = ["📰","✏️","🌿","⚽","🎨","💡","🎭","📚","🔭","🌍"];
 
-    function gerarCards() {
-        const noticias = JSON.parse(localStorage.getItem("noticias-alunos")) || [];
-
-        if (noticias.length === 0) {
-            cardsContainer.style.display = "none";
-            noticiasVazio.style.display = "flex";
-            return;
-        }
-
-        cardsContainer.style.display = "";
-        noticiasVazio.style.display = "none";
-        cardsContainer.innerHTML = "";
-
-        noticias.forEach((n, i) => {
-            const grad  = gradientes[i % gradientes.length];
-            const emoji = emojis[i % emojis.length];
-            const resumo = n.conteudo.length > 120
-                ? n.conteudo.substring(0, 120).trim() + "..."
-                : n.conteudo;
-            const metaParts = [n.data, n.autor ? `Por ${n.autor}` : "", n.turma].filter(Boolean).join(" · ");
-
-            // Primeiro card vira destaque
-            const destaque = i === 0 ? "card-destaque" : "";
-
-            const card = document.createElement("a");
-            card.href  = `noticia.html?id=${n.id}`;
-            card.classList.add("card");
-            if (destaque) card.classList.add("card-destaque");
-
-            card.innerHTML = `
-                <div class="card-img" style="background: ${grad};">
-                    <div class="card-img-icon">${emoji}</div>
-                    <span class="card-tag">${escapeHtml(n.categoria)}</span>
-                </div>
-                <div class="card-content">
-                    <p class="card-meta">${escapeHtml(metaParts)}</p>
-                    <h3>${escapeHtml(n.titulo)}</h3>
-                    <p>${escapeHtml(resumo)}</p>
-                </div>
-                <div class="card-footer">
-                    <span>${n.autor ? escapeHtml(n.autor) : "Anônimo"}</span>
-                    <div class="card-arrow">→</div>
-                </div>
-            `;
-            cardsContainer.appendChild(card);
-        });
-    }
-
     function escapeHtml(str) {
         return String(str || "")
             .replace(/&/g, "&amp;")
@@ -229,25 +211,60 @@
             .replace(/"/g, "&quot;");
     }
 
+    async function gerarCards() {
+        try {
+            const q = query(collection(db, "noticias"), orderBy("timestamp", "desc"));
+            const snapshot = await getDocs(q);
+            const noticias = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+            if (noticias.length === 0) {
+                cardsContainer.style.display = "none";
+                noticiasVazio.style.display = "flex";
+                return;
+            }
+
+            cardsContainer.style.display = "";
+            noticiasVazio.style.display = "none";
+            cardsContainer.innerHTML = "";
+
+            noticias.forEach((n, i) => {
+                const grad   = gradientes[i % gradientes.length];
+                const emoji  = emojis[i % emojis.length];
+                const resumo = n.conteudo && n.conteudo.length > 120
+                    ? n.conteudo.substring(0, 120).trim() + "..."
+                    : (n.conteudo || "");
+                const metaParts = [n.data, n.autor ? `Por ${n.autor}` : "", n.turma].filter(Boolean).join(" · ");
+
+                const card = document.createElement("a");
+                card.href = `noticia.html?id=${n.id}`;
+                card.classList.add("card");
+                if (i === 0) card.classList.add("card-destaque");
+
+                card.innerHTML = `
+                    <div class="card-img" style="background: ${grad};">
+                        <div class="card-img-icon">${emoji}</div>
+                        <span class="card-tag">${escapeHtml(n.categoria)}</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-meta">${escapeHtml(metaParts)}</p>
+                        <h3>${escapeHtml(n.titulo)}</h3>
+                        <p>${escapeHtml(resumo)}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span>${n.autor ? escapeHtml(n.autor) : "Anônimo"}</span>
+                        <div class="card-arrow">→</div>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        } catch (e) {
+            cardsContainer.style.display = "none";
+            noticiasVazio.style.display = "flex";
+            console.error("Erro ao carregar notícias:", e);
+        }
+    }
+
     gerarCards();
-    const toggle = document.querySelector(".menu-toggle");
-    const nav = document.querySelector("nav");
-    const links = document.querySelectorAll("nav a");
-
-    toggle.addEventListener("click", function () {
-        nav.classList.toggle("active");
-        toggle.classList.toggle("active");
-        document.body.classList.toggle("menu-open");
-    });
-
-    links.forEach(function (link) {
-        link.addEventListener("click", function () {
-            nav.classList.remove("active");
-            toggle.classList.remove("active");
-            document.body.classList.remove("menu-open");
-        });
-    });
-    
 </script>
 
 </body>
