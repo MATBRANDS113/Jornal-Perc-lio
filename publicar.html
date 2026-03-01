@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Notícia — Jornal Percílio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .publicar-page {
+            max-width: 720px;
+            margin: 50px auto;
+            padding: 0 24px 60px;
+        }
+
+        .form-publicar {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 2px 30px rgba(0,0,0,0.07);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-grupo label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--cor-escura);
+            letter-spacing: 0.5px;
+        }
+
+        .form-grupo input,
+        .form-grupo textarea,
+        .form-grupo select {
+            padding: 12px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            color: var(--cor-texto);
+            background: var(--cor-fundo);
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .form-grupo input:focus,
+        .form-grupo textarea:focus,
+        .form-grupo select:focus {
+            outline: none;
+            border-color: var(--cor-primaria);
+            background: white;
+        }
+
+        .form-grupo textarea {
+            resize: vertical;
+            min-height: 180px;
+            line-height: 1.7;
+        }
+
+        .form-grupo .dica {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 2px;
+        }
+
+        .btn-publicar {
+            padding: 14px 32px;
+            background: var(--cor-primaria);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            align-self: flex-start;
+            margin-top: 4px;
+        }
+
+        .btn-publicar:hover {
+            background: #286394;
+            transform: translateY(-2px);
+        }
+
+        /* Mensagem de sucesso */
+        .sucesso {
+            display: none;
+            background: #e8f8f0;
+            border-left: 4px solid #2ecc71;
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #1a6e3e;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sucesso.visivel {
+            display: flex;
+        }
+
+        .sucesso-icone { font-size: 22px; }
+
+        /* Preview */
+        .preview-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--cor-primaria);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .preview-box {
+            background: var(--cor-fundo);
+            border-radius: 12px;
+            padding: 20px 24px;
+            border: 1.5px dashed #ddd;
+            min-height: 60px;
+        }
+
+        .preview-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--cor-escura);
+            margin-bottom: 8px;
+        }
+
+        .preview-box .preview-meta {
+            font-size: 12px;
+            color: var(--cor-primaria);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .preview-box p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .preview-vazio {
+            font-size: 13px;
+            color: #ccc;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .form-publicar { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="topo">
+        
+        <div class="topo-texto">
+            <h1>Jornal da Escola Percílio</h1>
+            <p>Informação, eventos e projetos</p>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">← Voltar ao início</a></li>
+            <li><a href="noticias-alunos.html">Ver notícias dos alunos</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="publicar-page">
+
+    <div class="secao-header">
+        <p class="secao-titulo">Redação</p>
+        <h2 class="secao-heading">Publique sua <em>notícia</em></h2>
+    </div>
+
+    <div class="sucesso" id="msgSucesso">
+        <span class="sucesso-icone">✅</span>
+        <span>Notícia publicada com sucesso! <a href="noticias-alunos.html">Ver todas as notícias →</a></span>
+    </div>
+
+    <form class="form-publicar" id="formPublicar">
+
+        <div class="form-grupo">
+            <label for="autorNome">Seu nome</label>
+            <input type="text" id="autorNome" placeholder="Ex: Maria Silva" required maxlength="80">
+        </div>
+
+        <div class="form-grupo">
+            <label for="autorTurma">Turma</label>
+            <input type="text" id="autorTurma" placeholder="Ex: 7º A" maxlength="20">
+            <span class="dica">Opcional</span>
+        </div>
+
+        <div class="form-grupo">
+            <label for="tituloNoticia">Título da notícia</label>
+            <input type="text" id="tituloNoticia" placeholder="Ex: Projeto de reciclagem da turma 8B" required maxlength="120">
+        </div>
+
+        <div class="form-grupo">
+            <label for="categoriaNoticia">Categoria</label>
+            <select id="categoriaNoticia">
+                <option value="Escola">Escola</option>
+                <option value="Evento">Evento</option>
+                <option value="Esporte">Esporte</option>
+                <option value="Cultura">Cultura</option>
+                <option value="Meio Ambiente">Meio Ambiente</option>
+                <option value="Tecnologia">Tecnologia</option>
+                <option value="Outro">Outro</option>
+            </select>
+        </div>
+
+        <div class="form-grupo">
+            <label for="conteudoNoticia">Texto da notícia</label>
+            <textarea id="conteudoNoticia" placeholder="Escreva sua notícia aqui..." required maxlength="3000"></textarea>
+            <span class="dica" id="contadorChars">0 / 3000 caracteres</span>
+        </div>
+
+        <!-- Preview em tempo real -->
+        <div>
+            <p class="preview-label">Pré-visualização</p>
+            <div class="preview-box" id="previewBox">
+                <p class="preview-vazio">Preencha os campos acima para ver como vai ficar...</p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-publicar">Publicar notícia →</button>
+
+    </form>
+
+</main>
+
+<footer>
+    
+    <p>© 2026 Jornal Escolar</p>
+    <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
+</footer>
+
+<script>
+    const form       = document.getElementById("formPublicar");
+    const msgSucesso = document.getElementById("msgSucesso");
+    const preview    = document.getElementById("previewBox");
+    const conteudo   = document.getElementById("conteudoNoticia");
+    const titulo     = document.getElementById("tituloNoticia");
+    const autor      = document.getElementById("autorNome");
+    const turma      = document.getElementById("autorTurma");
+    const categoria  = document.getElementById("categoriaNoticia");
+    const contador   = document.getElementById("contadorChars");
+
+    // ── Contador de caracteres ──
+    conteudo.addEventListener("input", () => {
+        contador.textContent = `${conteudo.value.length} / 3000 caracteres`;
+        atualizarPreview();
+    });
+
+    // ── Preview em tempo real ──
+    function atualizarPreview() {
+        const t = titulo.value.trim();
+        const a = autor.value.trim();
+        const tu = turma.value.trim();
+        const c = conteudo.value.trim();
+        const cat = categoria.value;
+
+        if (!t && !c) {
+            preview.innerHTML = '<p class="preview-vazio">Preencha os campos acima para ver como vai ficar...</p>';
+            return;
+        }
+
+        const metaTexto = [cat, a ? `Por ${a}` : '', tu].filter(Boolean).join(' · ');
+
+        preview.innerHTML = `
+            ${t ? `<h3>${escapeHtml(t)}</h3>` : ''}
+            ${metaTexto ? `<p class="preview-meta">${escapeHtml(metaTexto)}</p>` : ''}
+            ${c ? `<p>${escapeHtml(c)}</p>` : ''}
+        `;
+    }
+
+    [titulo, autor, turma, categoria].forEach(el => {
+        el.addEventListener("input", atualizarPreview);
+    });
+
+    // ── Publicar notícia ──
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const noticia = {
+            id: Date.now(),
+            autor: autor.value.trim(),
+            turma: turma.value.trim(),
+            titulo: titulo.value.trim(),
+            categoria: categoria.value,
+            conteudo: conteudo.value.trim(),
+            data: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+        };
+
+        const salvas = JSON.parse(localStorage.getItem("noticias-alunos")) || [];
+        salvas.unshift(noticia); // mais recente primeiro
+        localStorage.setItem("noticias-alunos", JSON.stringify(salvas));
+
+        form.reset();
+        preview.innerHTML = '<p class="preview-vazio">Preencha os campos acima para ver como vai ficar...</p>';
+        contador.textContent = "0 / 3000 caracteres";
+        msgSucesso.classList.add("visivel");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Sanitiza texto para evitar XSS ──
+    function escapeHtml(str) {
+        return str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+    }
+</script>
+
+</body>
+</html>

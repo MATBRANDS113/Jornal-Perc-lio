@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícia — Jornal Percílio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="topo">
+        
+        <div class="topo-texto">
+            <h1>Jornal da Escola Percílio</h1>
+            <p>Informação, eventos e projetos</p>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">← Voltar ao início</a></li>
+            <li><a href="noticias-alunos.html">Ver todas as notícias</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="noticia-page" id="conteudoNoticia">
+    <!-- Preenchido pelo JavaScript -->
+</main>
+
+<footer>
+    
+    <p>© 2026 Jornal Escolar</p>
+    <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
+</footer>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const id     = Number(params.get("id"));
+    const noticias = JSON.parse(localStorage.getItem("noticias-alunos")) || [];
+    const noticia  = noticias.find(n => n.id === id);
+    const main     = document.getElementById("conteudoNoticia");
+
+    if (!noticia) {
+        main.innerHTML = `
+            <div style="text-align:center; padding: 80px 20px;">
+                <span style="font-size:56px;">📭</span>
+                <h2 style="font-family:'Playfair Display',serif; margin:16px 0 10px; color:#0E2A3A;">Notícia não encontrada</h2>
+                <p style="color:#666; margin-bottom:24px;">Esta notícia pode ter sido removida ou o link está incorreto.</p>
+                <a href="index.html" style="background:#4FA3D1; color:white; padding:12px 28px; border-radius:25px; text-decoration:none; font-size:14px;">← Voltar ao início</a>
+            </div>`;
+    } else {
+        document.title = `${noticia.titulo} — Jornal Percílio`;
+
+        const metaParts = [noticia.data, noticia.autor ? `Por ${noticia.autor}` : "", noticia.turma].filter(Boolean).join(" · ");
+
+        main.innerHTML = `
+            <div class="noticia-header">
+                <span class="card-tag" style="position:static; display:inline-block; margin-bottom:16px;">${escapeHtml(noticia.categoria)}</span>
+                <h2>${escapeHtml(noticia.titulo)}</h2>
+                <p class="noticia-meta">${escapeHtml(metaParts)}</p>
+            </div>
+
+            <hr class="noticia-divider">
+
+            <div class="noticia-corpo">
+                ${noticia.conteudo.split("\n").map(p => p.trim() ? `<p>${escapeHtml(p)}</p>` : "").join("")}
+            </div>
+
+            <div style="margin-top:48px; padding-top:24px; border-top:1px solid #eee; display:flex; gap:12px; flex-wrap:wrap;">
+                <a href="index.html" style="background:#4FA3D1; color:white; padding:11px 24px; border-radius:25px; text-decoration:none; font-size:14px; font-weight:500;">← Voltar ao início</a>
+                <a href="noticias-alunos.html" style="background:white; color:#0E2A3A; border:1.5px solid #ddd; padding:11px 24px; border-radius:25px; text-decoration:none; font-size:14px; font-weight:500;">Ver todas as notícias</a>
+            </div>
+        `;
+    }
+
+    function escapeHtml(str) {
+        return String(str || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+    }
+</script>
+
+</body>
+</html>

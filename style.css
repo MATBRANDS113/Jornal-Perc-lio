@@ -55,19 +55,37 @@ header {
 }
 
 .topo {
-    padding: 20px;
-    text-align: center;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.logo-escola {
+    height: 64px;
+    width: auto;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+    background: white;
+    padding: 3px;
+}
+
+.topo-texto {
+    text-align: left;
 }
 
 .topo h1 {
-    font-size: 36px;
-    letter-spacing: 1px;
+    font-size: 30px;
+    letter-spacing: 0.5px;
+    line-height: 1.15;
 }
 
 .topo p {
-    font-size: 14px;
+    font-size: 13px;
     opacity: 0.85;
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
 /* ── Navegação ───────────────────────────────── */
@@ -172,6 +190,7 @@ nav ul li a:hover {
     border-radius: 14px;
     max-width: 560px;
     backdrop-filter: blur(2px);
+    
 }
 
 .manchete-tag {
@@ -481,7 +500,7 @@ button:hover {
 
 /* Overlay de hover */
 .foto::after {
-    
+    content: '🔍';
     position: absolute;
     inset: 0;
     background: rgba(14,42,58,0.5);
@@ -601,9 +620,7 @@ footer {
     color: white;
     text-align: center;
     padding: 28px 20px;
-    
 }
-
 
 footer p {
     font-size: 13px;
@@ -619,6 +636,25 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+.logo-footer {
+    height: 72px;
+    width: auto;
+    border-radius: 50%;
+    background: white;
+    padding: 5px;
+    margin-bottom: 14px;
+    box-shadow: 0 0 0 3px rgba(79, 163, 209, 0.4);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform var(--transicao), box-shadow var(--transicao);
+}
+
+.logo-footer:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 5px rgba(79, 163, 209, 0.6);
 }
 
 /* ── Responsivo — Tablet (≤ 768px) ──────────── */
@@ -723,6 +759,7 @@ footer a:hover {
     nav { top: 160px; }
 
     .topo h1 { font-size: 24px; }
+    .logo-escola { height: 48px; }
 
     .manchete {
         padding: 20px;
@@ -880,4 +917,48 @@ footer a:hover {
     .noticia-header h2 { font-size: 26px; }
     .noticia-corpo p   { font-size: 15px; }
     .galeria-noticia img { height: 200px; }
+}
+
+/* ── Botão mini publicar ─────────────────────── */
+.btn-publicar-mini {
+    display: inline-block;
+    padding: 10px 22px;
+    background: var(--cor-primaria);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background var(--transicao), transform var(--transicao);
+}
+
+.btn-publicar-mini:hover {
+    background: #286394;
+    transform: translateY(-2px);
+}
+
+/* ── Estado vazio das notícias ───────────────── */
+.noticias-vazio {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px;
+    gap: 12px;
+}
+
+.noticias-vazio span {
+    font-size: 56px;
+}
+
+.noticias-vazio h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #ccc;
+}
+
+.noticias-vazio p {
+    font-size: 14px;
+    color: #bbb;
 }

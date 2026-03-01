@@ -15,8 +15,11 @@
 
 <header>
     <div class="topo">
-        <h1>Jornal da Escola Percílio</h1>
-        <p>Informação, eventos e projetos</p>
+        
+        <div class="topo-texto">
+            <h1>Jornal da Escola Percílio</h1>
+            <p>Informação, eventos e projetos</p>
+        </div>
     </div>
     <div class="menu-toggle" aria-label="Abrir menu" role="button" tabindex="0">
         <span></span>
@@ -27,6 +30,7 @@
         <ul>
             <li><a href="#">Início</a></li>
             <li><a href="#inicio">Notícias</a></li>
+            <li><a href="noticias-alunos.html">📰 Alunos</a></li>
             <li><a href="#galeria">Galeria</a></li>
             <li><a href="#comentarios">Comentários</a></li>
         </ul>
@@ -51,49 +55,24 @@
 
 <!-- NOTÍCIAS -->
 <main class="conteudo">
-    <div class="secao-header">
-        <p class="secao-titulo">Notícias</p>
-        <h2 class="secao-heading">O que está <em>acontecendo</em></h2>
+    <div class="secao-header" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div>
+            <p class="secao-titulo">Notícias</p>
+            <h2 class="secao-heading">O que está <em>acontecendo</em></h2>
+        </div>
+        <a href="publicar.html" class="btn-publicar-mini">✏️ Escrever notícia</a>
     </div>
 
-    <section class="noticias">
-
-        <!-- Card destaque (ocupa toda a largura) -->
-        <a href="ano-letivo.html" class="card card-destaque">
-            <div class="card-img">
-                <!-- Para adicionar imagem real: <img src="foto.webp" alt="..." loading="lazy"> -->
-                <div class="card-img-icon">📰</div>
-                <span class="card-tag">Destaque</span>
-            </div>
-            <div class="card-content">
-                <p class="card-meta">Fev 2026 · Escola</p>
-                <h3>Início do Ano Letivo 2026</h3>
-                <p>O novo ano chegou com novidades para todos os alunos da Escola Percílio. Confira tudo que está planejado para este semestre.</p>
-                <div class="card-footer">
-                    <span>3 min de leitura</span>
-                    <div class="card-arrow">→</div>
-                </div>
-            </div>
-        </a>
-
-        <!-- Card normal -->
-        <a href="mostra.html" class="card">
-            <div class="card-img" style="background: linear-gradient(135deg, #1a4a6b, #4FA3D1);">
-                <div class="card-img-icon">🔭</div>
-                <span class="card-tag">Em breve</span>
-            </div>
-            <div class="card-content">
-                <p class="card-meta">Próximo evento</p>
-                <h3>Novos Projetos</h3>
-                <p>Os próximos projetos da escola aparecerão em breve por aqui. Fique de olho!</p>
-            </div>
-            <div class="card-footer">
-                <span>Em breve</span>
-                <div class="card-arrow">→</div>
-            </div>
-        </a>
-
+    <section class="noticias" id="cardsNoticias">
+        <!-- Cards gerados dinamicamente pelo JavaScript -->
     </section>
+
+    <div class="noticias-vazio" id="noticiasVazio" style="display:none;">
+        <span>📭</span>
+        <h3>Nenhuma notícia publicada ainda</h3>
+        <p>Seja o primeiro a escrever!</p>
+        <a href="publicar.html" class="btn-publicar-mini">✏️ Escrever notícia</a>
+    </div>
 </main>
 
 <!-- GALERIA -->
@@ -182,7 +161,75 @@
         lista.appendChild(div);
     }
 
-    // ─── Menu Burger ─────────────────────────────────────────────
+    // ─── Cards de notícias dos alunos ────────────────────────────
+    const cardsContainer = document.getElementById("cardsNoticias");
+    const noticiasVazio  = document.getElementById("noticiasVazio");
+    const gradientes = [
+        "linear-gradient(135deg, #0E2A3A, #4FA3D1)",
+        "linear-gradient(135deg, #1a4a6b, #4FA3D1)",
+        "linear-gradient(135deg, #163040, #2a6080)",
+        "linear-gradient(135deg, #0a2030, #1a5c7a)",
+        "linear-gradient(135deg, #1a3a50, #4FA3D1)",
+    ];
+    const emojis = ["📰","✏️","🌿","⚽","🎨","💡","🎭","📚","🔭","🌍"];
+
+    function gerarCards() {
+        const noticias = JSON.parse(localStorage.getItem("noticias-alunos")) || [];
+
+        if (noticias.length === 0) {
+            cardsContainer.style.display = "none";
+            noticiasVazio.style.display = "flex";
+            return;
+        }
+
+        cardsContainer.style.display = "";
+        noticiasVazio.style.display = "none";
+        cardsContainer.innerHTML = "";
+
+        noticias.forEach((n, i) => {
+            const grad  = gradientes[i % gradientes.length];
+            const emoji = emojis[i % emojis.length];
+            const resumo = n.conteudo.length > 120
+                ? n.conteudo.substring(0, 120).trim() + "..."
+                : n.conteudo;
+            const metaParts = [n.data, n.autor ? `Por ${n.autor}` : "", n.turma].filter(Boolean).join(" · ");
+
+            // Primeiro card vira destaque
+            const destaque = i === 0 ? "card-destaque" : "";
+
+            const card = document.createElement("a");
+            card.href  = `noticia.html?id=${n.id}`;
+            card.classList.add("card");
+            if (destaque) card.classList.add("card-destaque");
+
+            card.innerHTML = `
+                <div class="card-img" style="background: ${grad};">
+                    <div class="card-img-icon">${emoji}</div>
+                    <span class="card-tag">${escapeHtml(n.categoria)}</span>
+                </div>
+                <div class="card-content">
+                    <p class="card-meta">${escapeHtml(metaParts)}</p>
+                    <h3>${escapeHtml(n.titulo)}</h3>
+                    <p>${escapeHtml(resumo)}</p>
+                </div>
+                <div class="card-footer">
+                    <span>${n.autor ? escapeHtml(n.autor) : "Anônimo"}</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            `;
+            cardsContainer.appendChild(card);
+        });
+    }
+
+    function escapeHtml(str) {
+        return String(str || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+    }
+
+    gerarCards();
     const toggle = document.querySelector(".menu-toggle");
     const nav = document.querySelector("nav");
     const links = document.querySelectorAll("nav a");
