@@ -4,367 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notícias dos Alunos — Jornal Percílio</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
     <style>
-        .alunos-page {
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 0 24px 60px;
-        }
-
-        .alunos-toolbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        .btn-nova {
-            display: inline-block;
-            padding: 11px 24px;
-            background: var(--cor-primaria);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.3s ease, transform 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .btn-nova:hover {
-            background: #286394;
-            transform: translateY(-2px);
-        }
-
-        /* ── Botão admin ── */
-        .btn-admin {
-            background: none;
-            border: 1.5px solid #ddd;
-            border-radius: 25px;
-            padding: 9px 18px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            color: #aaa;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
+        .alunos-page { max-width: 900px; margin: 50px auto; padding: 0 24px 60px; }
+        .alunos-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+        .btn-nova { display: inline-block; padding: 11px 24px; background: var(--cor-primaria); color: white; text-decoration: none; border-radius: 25px; font-size: 14px; font-weight: 500; transition: background 0.3s ease, transform 0.3s ease; white-space: nowrap; }
+        .btn-nova:hover { background: #286394; transform: translateY(-2px); }
+        .btn-admin { background: none; border: 1.5px solid #ddd; border-radius: 25px; padding: 9px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #aaa; cursor: pointer; transition: all 0.3s ease; }
         .btn-admin:hover { border-color: #aaa; color: #666; }
-
-        .btn-admin.ativo {
-            border-color: #e74c3c;
-            color: #e74c3c;
-            background: #fff5f5;
-        }
-
-        /* ── Modal de senha ── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
+        .btn-admin.ativo { border-color: #e74c3c; color: #e74c3c; background: #fff5f5; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
         .modal-overlay.visivel { display: flex; }
-
-        .modal {
-            background: white;
-            border-radius: 20px;
-            padding: 36px 40px;
-            max-width: 380px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
+        .modal { background: white; border-radius: 20px; padding: 36px 40px; max-width: 380px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); text-align: center; }
         .modal-icone { font-size: 40px; margin-bottom: 12px; }
-
-        .modal h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            color: var(--cor-escura);
-            margin-bottom: 8px;
-        }
-
-        .modal p {
-            font-size: 13px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-
-        .modal input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 10px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 15px;
-            margin-bottom: 10px;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .modal input:focus {
-            outline: none;
-            border-color: var(--cor-primaria);
-        }
-
-        .modal-erro {
-            font-size: 12px;
-            color: #e74c3c;
-            margin-bottom: 12px;
-            min-height: 16px;
-        }
-
-        .modal-btns {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .btn-confirmar {
-            padding: 11px 24px;
-            background: var(--cor-primaria);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
+        .modal h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--cor-escura); margin-bottom: 8px; }
+        .modal p { font-size: 13px; color: #888; margin-bottom: 20px; }
+        .modal input { width: 100%; padding: 12px 16px; border: 1.5px solid #e0e0e0; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
+        .modal input:focus { outline: none; border-color: var(--cor-primaria); }
+        .modal-erro { font-size: 12px; color: #e74c3c; margin-bottom: 12px; min-height: 16px; }
+        .modal-btns { display: flex; gap: 10px; justify-content: center; }
+        .btn-confirmar { padding: 11px 24px; background: var(--cor-primaria); color: white; border: none; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.3s ease; }
         .btn-confirmar:hover { background: #286394; }
-
-        .btn-cancelar {
-            padding: 11px 24px;
-            background: white;
-            color: #aaa;
-            border: 1.5px solid #ddd;
-            border-radius: 25px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
+        .btn-cancelar { padding: 11px 24px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.3s ease; }
         .btn-cancelar:hover { border-color: #aaa; color: #666; }
-
-        /* ── Banner modo admin ── */
-        .banner-admin {
-            display: none;
-            background: #fff3f3;
-            border: 1.5px solid #f5c6c6;
-            border-radius: 12px;
-            padding: 14px 20px;
-            margin-bottom: 24px;
-            font-size: 13px;
-            color: #c0392b;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .banner-admin { display: none; background: #fff3f3; border: 1.5px solid #f5c6c6; border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; font-size: 13px; color: #c0392b; align-items: center; gap: 10px; }
         .banner-admin.visivel { display: flex; }
         .banner-admin span { flex: 1; }
-
-        .btn-sair-admin {
-            background: none;
-            border: 1.5px solid #e74c3c;
-            color: #e74c3c;
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 12px;
-            font-family: 'DM Sans', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
+        .btn-sair-admin { background: none; border: 1.5px solid #e74c3c; color: #e74c3c; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
         .btn-sair-admin:hover { background: #e74c3c; color: white; }
-
-        /* ── Filtros ── */
-        .filtros {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 32px;
-        }
-
-        .filtro-btn {
-            padding: 7px 18px;
-            border: 1.5px solid #ddd;
-            background: white;
-            border-radius: 20px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--cor-suave);
-        }
-
-        .filtro-btn:hover,
-        .filtro-btn.ativo {
-            background: var(--cor-primaria);
-            border-color: var(--cor-primaria);
-            color: white;
-        }
-
-        /* ── Cards de notícia ── */
-        .lista-noticias {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .noticia-card {
-            background: white;
-            border-radius: 16px;
-            padding: 28px 32px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 4px solid var(--cor-primaria);
-            position: relative;
-        }
-
-        .noticia-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(14,42,58,0.1);
-        }
-
-        .noticia-card-topo {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-
-        .noticia-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            color: var(--cor-escura);
-            line-height: 1.3;
-        }
-
-        .noticia-card-tag {
-            background: var(--cor-acento);
-            color: white;
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            border-radius: 20px;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .noticia-card-meta {
-            font-size: 12px;
-            color: var(--cor-primaria);
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            margin-bottom: 14px;
-        }
-
-        .noticia-card-corpo {
-            font-size: 15px;
-            color: #444;
-            line-height: 1.8;
-            white-space: pre-wrap;
-        }
-
-        .noticia-card-corpo.recolhido {
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .btn-expandir {
-            background: none;
-            border: none;
-            color: var(--cor-primaria);
-            font-size: 13px;
-            font-family: 'DM Sans', sans-serif;
-            cursor: pointer;
-            padding: 8px 0 0;
-            font-weight: 500;
-            margin-top: 4px;
-            transition: color 0.3s;
-        }
-
+        .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+        .filtro-btn { padding: 7px 18px; border: 1.5px solid #ddd; background: white; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.3s ease; color: var(--cor-suave); }
+        .filtro-btn:hover, .filtro-btn.ativo { background: var(--cor-primaria); border-color: var(--cor-primaria); color: white; }
+        .lista-noticias { display: flex; flex-direction: column; gap: 20px; }
+        .noticia-card { background: white; border-radius: 16px; padding: 28px 32px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; border-left: 4px solid var(--cor-primaria); position: relative; }
+        .noticia-card:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(14,42,58,0.1); }
+        .noticia-card-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+        .noticia-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--cor-escura); line-height: 1.3; }
+        .noticia-card-tag { background: var(--cor-acento); color: white; font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+        .noticia-card-meta { font-size: 12px; color: var(--cor-primaria); font-weight: 500; letter-spacing: 0.5px; margin-bottom: 14px; }
+        .noticia-card-corpo { font-size: 15px; color: #444; line-height: 1.8; white-space: pre-wrap; }
+        .noticia-card-corpo.recolhido { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+        .btn-expandir { background: none; border: none; color: var(--cor-primaria); font-size: 13px; font-family: 'DM Sans', sans-serif; cursor: pointer; padding: 8px 0 0; font-weight: 500; margin-top: 4px; transition: color 0.3s; }
         .btn-expandir:hover { color: #286394; }
-
-        /* ── Botão apagar (só no modo admin) ── */
-        .btn-apagar {
-            display: none;
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 7px 16px;
-            font-size: 12px;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
+        .btn-apagar { display: none; position: absolute; top: 16px; right: 16px; background: #e74c3c; color: white; border: none; border-radius: 20px; padding: 7px 16px; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; }
         .btn-apagar:hover { background: #c0392b; transform: scale(1.05); }
-
         body.modo-admin .btn-apagar { display: block; }
         body.modo-admin .noticia-card { border-left-color: #e74c3c; }
-
-        /* ── Estado vazio ── */
-        .vazio {
-            text-align: center;
-            padding: 80px 20px;
-            color: #bbb;
-        }
-
+        .vazio { text-align: center; padding: 80px 20px; color: #bbb; }
         .vazio-icone { font-size: 56px; margin-bottom: 16px; display: block; }
-
-        .vazio h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            color: #ccc;
-            margin-bottom: 10px;
-        }
-
+        .vazio h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: #ccc; margin-bottom: 10px; }
         .vazio p { font-size: 14px; margin-bottom: 24px; }
-
-        .contador-noticias {
-            font-size: 13px;
-            color: var(--cor-suave);
-        }
-
-        @media (max-width: 600px) {
-            .noticia-card { padding: 20px; }
-            .noticia-card h3 { font-size: 18px; }
-            .btn-apagar { top: 12px; right: 12px; }
-        }
+        .contador-noticias { font-size: 13px; color: var(--cor-suave); }
+        .carregando { text-align: center; padding: 60px; color: #aaa; font-size: 15px; }
+        @media (max-width: 600px) { .noticia-card { padding: 20px; } .noticia-card h3 { font-size: 18px; } .btn-apagar { top: 12px; right: 12px; } }
     </style>
 </head>
 <body>
 
-<!-- Modal de confirmação de apagar -->
 <div class="modal-overlay" id="modalConfirmar">
     <div class="modal">
         <div class="modal-icone">🗑</div>
@@ -377,7 +76,6 @@
     </div>
 </div>
 
-<!-- Modal de senha -->
 <div class="modal-overlay" id="modalSenha">
     <div class="modal">
         <div class="modal-icone">🔑</div>
@@ -394,7 +92,7 @@
 
 <header>
     <div class="topo">
-        
+        <img src="logo.png" alt="Logo EMEF Percílio Joaquim da Silveira" class="logo-escola">
         <div class="topo-texto">
             <h1>Jornal da Escola Percílio</h1>
             <p>Informação, eventos e projetos</p>
@@ -409,27 +107,21 @@
 </header>
 
 <main class="alunos-page">
-
     <div class="secao-header">
         <p class="secao-titulo">Redação dos alunos</p>
         <h2 class="secao-heading">Notícias escritas por <em>você</em></h2>
     </div>
-
     <div class="alunos-toolbar">
         <span class="contador-noticias" id="contadorNoticias">Carregando...</span>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
             <button class="btn-admin" id="btnAdmin">🔑 Professora</button>
             <a href="publicar.html" class="btn-nova">✏️ Escrever notícia</a>
         </div>
     </div>
-
-    <!-- Banner modo admin -->
     <div class="banner-admin" id="bannerAdmin">
         <span>🔴 Modo administração ativo — clique em <strong>Apagar</strong> para remover uma notícia.</span>
         <button class="btn-sair-admin" id="btnSairAdmin">Sair</button>
     </div>
-
-    <!-- Filtros -->
     <div class="filtros" id="filtros">
         <button class="filtro-btn ativo" data-categoria="Todos">Todos</button>
         <button class="filtro-btn" data-categoria="Escola">Escola</button>
@@ -440,141 +132,83 @@
         <button class="filtro-btn" data-categoria="Tecnologia">Tecnologia</button>
         <button class="filtro-btn" data-categoria="Outro">Outro</button>
     </div>
-
-    <div class="lista-noticias" id="listaNoticias"></div>
-
+    <div class="lista-noticias" id="listaNoticias">
+        <div class="carregando">⏳ Carregando notícias...</div>
+    </div>
 </main>
 
 <footer>
-    
+    <img src="logo.png" alt="Logo EMEF Percílio Joaquim da Silveira" class="logo-footer">
     <p>© 2026 Jornal Escolar</p>
     <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
 </footer>
 
-<script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC4TOGLUFzZ1o5EmvUH63XiWQA1vDxeqps",
+        authDomain: "jornal-percilio.firebaseapp.com",
+        projectId: "jornal-percilio",
+        storageBucket: "jornal-percilio.firebasestorage.app",
+        messagingSenderId: "88179619322",
+        appId: "1:88179619322:web:fa231bd1eea959fee52043"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
     // ═══════════════════════════════════════════
     // 🔑 SENHA DA PROFESSORA — troque aqui:
     const SENHA_PROFESSORA = "percilio2026";
     // ═══════════════════════════════════════════
 
-    let todasNoticias  = JSON.parse(localStorage.getItem("noticias-alunos")) || [];
+    let todasNoticias  = [];
     let categoriaAtiva = "Todos";
     let modoAdmin      = false;
+    let idParaApagar   = null;
 
-    const lista       = document.getElementById("listaNoticias");
-    const contador    = document.getElementById("contadorNoticias");
-    const filtros     = document.getElementById("filtros");
+    const lista          = document.getElementById("listaNoticias");
+    const contador       = document.getElementById("contadorNoticias");
+    const filtros        = document.getElementById("filtros");
     const modal          = document.getElementById("modalSenha");
     const modalConfirmar = document.getElementById("modalConfirmar");
-    const inputSenha  = document.getElementById("inputSenha");
-    const erroSenha   = document.getElementById("erroSenha");
-    const bannerAdmin = document.getElementById("bannerAdmin");
-    const btnAdmin    = document.getElementById("btnAdmin");
+    const inputSenha     = document.getElementById("inputSenha");
+    const erroSenha      = document.getElementById("erroSenha");
+    const bannerAdmin    = document.getElementById("bannerAdmin");
+    const btnAdmin       = document.getElementById("btnAdmin");
 
-    // ── Modal de senha ──────────────────────────
-    btnAdmin.addEventListener("click", () => {
-        if (modoAdmin) return; // já está admin, ignora
-        inputSenha.value = "";
-        erroSenha.textContent = "";
-        modal.classList.add("visivel");
-        setTimeout(() => inputSenha.focus(), 100);
-    });
-
-    document.getElementById("btnCancelar").addEventListener("click", fecharModal);
-    modal.addEventListener("click", e => { if (e.target === modal) fecharModal(); });
-
-    document.getElementById("btnConfirmar").addEventListener("click", verificarSenha);
-    inputSenha.addEventListener("keydown", e => { if (e.key === "Enter") verificarSenha(); });
-
-    function fecharModal() {
-        modal.classList.remove("visivel");
-        erroSenha.textContent = "";
-    }
-
-    function verificarSenha() {
-        if (inputSenha.value === SENHA_PROFESSORA) {
-            fecharModal();
-            ativarAdmin();
-        } else {
-            erroSenha.textContent = "Senha incorreta. Tente novamente.";
-            inputSenha.value = "";
-            inputSenha.focus();
+    // ── Carrega notícias do Firebase ──
+    async function carregarNoticias() {
+        try {
+            const q = query(collection(db, "noticias"), orderBy("timestamp", "desc"));
+            const snapshot = await getDocs(q);
+            todasNoticias = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            renderizar(todasNoticias);
+        } catch (e) {
+            lista.innerHTML = '<div class="vazio"><span class="vazio-icone">⚠️</span><h3>Erro ao carregar</h3><p>Verifique sua conexão e recarregue a página.</p></div>';
+            console.error(e);
         }
     }
 
-    // ── Modo admin ──────────────────────────────
-    function ativarAdmin() {
-        modoAdmin = true;
-        document.body.classList.add("modo-admin");
-        bannerAdmin.classList.add("visivel");
-        btnAdmin.classList.add("ativo");
-        btnAdmin.textContent = "🔴 Admin ativo";
-    }
-
-    function desativarAdmin() {
-        modoAdmin = false;
-        document.body.classList.remove("modo-admin");
-        bannerAdmin.classList.remove("visivel");
-        btnAdmin.classList.remove("ativo");
-        btnAdmin.textContent = "🔑 Professora";
-    }
-
-    document.getElementById("btnSairAdmin").addEventListener("click", desativarAdmin);
-
-    // ── Apagar notícia ──────────────────────────
-    let idParaApagar = null;
-
-    function apagarNoticia(id) {
-        if (!modoAdmin) return;
-        idParaApagar = id;
-        modalConfirmar.classList.add("visivel");
-    }
-
-    document.getElementById("btnConfirmarApagar").addEventListener("click", () => {
-        if (idParaApagar === null) return;
-        todasNoticias = todasNoticias.filter(n => n.id !== idParaApagar);
-        localStorage.setItem("noticias-alunos", JSON.stringify(todasNoticias));
-        idParaApagar = null;
-        modalConfirmar.classList.remove("visivel");
-        const filtradas = categoriaAtiva === "Todos"
-            ? todasNoticias
-            : todasNoticias.filter(n => n.categoria === categoriaAtiva);
-        renderizar(filtradas);
-    });
-
-    document.getElementById("btnCancelarApagar").addEventListener("click", () => {
-        idParaApagar = null;
-        modalConfirmar.classList.remove("visivel");
-    });
-
-    // ── Renderiza notícias ──────────────────────
+    // ── Renderiza ──
     function renderizar(noticias) {
         lista.innerHTML = "";
         contador.textContent = `${noticias.length} notícia${noticias.length !== 1 ? 's' : ''} publicada${noticias.length !== 1 ? 's' : ''}`;
 
         if (noticias.length === 0) {
-            lista.innerHTML = `
-                <div class="vazio">
-                    <span class="vazio-icone">📭</span>
-                    <h3>Nenhuma notícia ainda</h3>
-                    <p>Seja o primeiro a publicar uma notícia!</p>
-                    <a href="publicar.html" class="btn-nova">✏️ Escrever agora</a>
-                </div>`;
+            lista.innerHTML = `<div class="vazio"><span class="vazio-icone">📭</span><h3>Nenhuma notícia ainda</h3><p>Seja o primeiro a publicar!</p><a href="publicar.html" class="btn-nova">✏️ Escrever agora</a></div>`;
             return;
         }
 
         noticias.forEach(n => {
             const card    = document.createElement("article");
             card.classList.add("noticia-card");
-
-            const metaParts = [];
-            if (n.data)  metaParts.push(n.data);
-            if (n.autor) metaParts.push(`Por ${escapeHtml(n.autor)}`);
-            if (n.turma) metaParts.push(escapeHtml(n.turma));
-
+            const metaParts = [n.data, n.autor ? `Por ${escapeHtml(n.autor)}` : "", n.turma ? escapeHtml(n.turma) : ""].filter(Boolean);
             const corpoId = `corpo-${n.id}`;
             const btnId   = `btn-${n.id}`;
-            const longo   = n.conteudo.length > 300;
+            const longo   = n.conteudo && n.conteudo.length > 300;
 
             card.innerHTML = `
                 <button class="btn-apagar" data-id="${n.id}">🗑 Apagar</button>
@@ -583,16 +217,16 @@
                     <span class="noticia-card-tag">${escapeHtml(n.categoria)}</span>
                 </div>
                 <p class="noticia-card-meta">${metaParts.join(' · ')}</p>
-                <p class="noticia-card-corpo${longo ? ' recolhido' : ''}" id="${corpoId}">${escapeHtml(n.conteudo)}</p>
+                <p class="noticia-card-corpo${longo ? ' recolhido' : ''}" id="${corpoId}">${escapeHtml(n.conteudo || '')}</p>
                 ${longo ? `<button class="btn-expandir" id="${btnId}">Ler mais ↓</button>` : ''}
             `;
-
             lista.appendChild(card);
 
-            // Botão apagar
-            card.querySelector(".btn-apagar").addEventListener("click", () => apagarNoticia(n.id));
+            card.querySelector(".btn-apagar").addEventListener("click", () => {
+                idParaApagar = n.id;
+                modalConfirmar.classList.add("visivel");
+            });
 
-            // Botão expandir
             if (longo) {
                 document.getElementById(btnId).addEventListener("click", function () {
                     const corpo = document.getElementById(corpoId);
@@ -604,32 +238,80 @@
         });
     }
 
-    // ── Filtros ─────────────────────────────────
-    filtros.addEventListener("click", function (e) {
+    // ── Apagar no Firebase ──
+    document.getElementById("btnConfirmarApagar").addEventListener("click", async () => {
+        if (!idParaApagar) return;
+        try {
+            await deleteDoc(doc(db, "noticias", idParaApagar));
+            todasNoticias = todasNoticias.filter(n => n.id !== idParaApagar);
+            idParaApagar = null;
+            modalConfirmar.classList.remove("visivel");
+            const filtradas = categoriaAtiva === "Todos" ? todasNoticias : todasNoticias.filter(n => n.categoria === categoriaAtiva);
+            renderizar(filtradas);
+        } catch (e) {
+            alert("Erro ao apagar. Tente novamente.");
+            console.error(e);
+        }
+    });
+
+    document.getElementById("btnCancelarApagar").addEventListener("click", () => {
+        idParaApagar = null;
+        modalConfirmar.classList.remove("visivel");
+    });
+
+    // ── Senha ──
+    btnAdmin.addEventListener("click", () => {
+        if (modoAdmin) return;
+        inputSenha.value = "";
+        erroSenha.textContent = "";
+        modal.classList.add("visivel");
+        setTimeout(() => inputSenha.focus(), 100);
+    });
+
+    document.getElementById("btnCancelar").addEventListener("click", () => { modal.classList.remove("visivel"); });
+    modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("visivel"); });
+
+    document.getElementById("btnConfirmar").addEventListener("click", verificarSenha);
+    inputSenha.addEventListener("keydown", e => { if (e.key === "Enter") verificarSenha(); });
+
+    function verificarSenha() {
+        if (inputSenha.value === SENHA_PROFESSORA) {
+            modal.classList.remove("visivel");
+            modoAdmin = true;
+            document.body.classList.add("modo-admin");
+            bannerAdmin.classList.add("visivel");
+            btnAdmin.classList.add("ativo");
+            btnAdmin.textContent = "🔴 Admin ativo";
+        } else {
+            erroSenha.textContent = "Senha incorreta. Tente novamente.";
+            inputSenha.value = "";
+            inputSenha.focus();
+        }
+    }
+
+    document.getElementById("btnSairAdmin").addEventListener("click", () => {
+        modoAdmin = false;
+        document.body.classList.remove("modo-admin");
+        bannerAdmin.classList.remove("visivel");
+        btnAdmin.classList.remove("ativo");
+        btnAdmin.textContent = "🔑 Professora";
+    });
+
+    // ── Filtros ──
+    filtros.addEventListener("click", e => {
         if (!e.target.classList.contains("filtro-btn")) return;
         document.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("ativo"));
         e.target.classList.add("ativo");
         categoriaAtiva = e.target.dataset.categoria;
-
-        const filtradas = categoriaAtiva === "Todos"
-            ? todasNoticias
-            : todasNoticias.filter(n => n.categoria === categoriaAtiva);
-
+        const filtradas = categoriaAtiva === "Todos" ? todasNoticias : todasNoticias.filter(n => n.categoria === categoriaAtiva);
         renderizar(filtradas);
     });
 
-    // ── Sanitiza texto ───────────────────────────
     function escapeHtml(str) {
-        return String(str || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
+        return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
-    // ── Inicializa ───────────────────────────────
-    renderizar(todasNoticias);
+    carregarNoticias();
 </script>
-
 </body>
 </html>

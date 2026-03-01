@@ -4,335 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicar Notícia — Jornal Percílio</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
     <style>
-
-        /* ── Página de publicação ── */
-        .publicar-page {
-            max-width: 720px;
-            margin: 50px auto;
-            padding: 0 24px 80px;
-        }
-
-        /* ── Etapas ── */
-        .etapas {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            margin-bottom: 48px;
-        }
-
-        .etapa {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #bbb;
-            letter-spacing: 0.5px;
-        }
-
+        .publicar-page { max-width: 720px; margin: 50px auto; padding: 0 24px 80px; }
+        .etapas { display: flex; align-items: center; margin-bottom: 48px; }
+        .etapa { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: #bbb; letter-spacing: 0.5px; }
         .etapa.ativa { color: var(--cor-primaria); }
         .etapa.concluida { color: #2ecc71; }
-
-        .etapa-num {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            border: 2px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-
-        .etapa.ativa .etapa-num {
-            border-color: var(--cor-primaria);
-            background: var(--cor-primaria);
-            color: white;
-        }
-
-        .etapa.concluida .etapa-num {
-            border-color: #2ecc71;
-            background: #2ecc71;
-            color: white;
-        }
-
-        .etapa-linha {
-            flex: 1;
-            height: 2px;
-            background: #eee;
-            margin: 0 8px;
-        }
-
-        /* ── Seções do formulário ── */
-        .form-secao {
-            display: none;
-            animation: entrar 0.4s ease;
-        }
-
+        .etapa-num { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #ddd; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; transition: all 0.3s ease; }
+        .etapa.ativa .etapa-num { border-color: var(--cor-primaria); background: var(--cor-primaria); color: white; }
+        .etapa.concluida .etapa-num { border-color: #2ecc71; background: #2ecc71; color: white; }
+        .etapa-linha { flex: 1; height: 2px; background: #eee; margin: 0 8px; }
+        .form-secao { display: none; animation: entrar 0.4s ease; }
         .form-secao.ativa { display: block; }
-
-        @keyframes entrar {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── Campos ── */
-        .form-grupo {
-            margin-bottom: 24px;
-        }
-
-        .form-grupo label {
-            display: block;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--cor-escura);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .form-grupo input,
-        .form-grupo select {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1.5px solid #e8e8e8;
-            border-radius: 12px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 16px;
-            color: var(--cor-texto);
-            background: white;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .form-grupo input:focus,
-        .form-grupo select:focus {
-            outline: none;
-            border-color: var(--cor-primaria);
-            box-shadow: 0 0 0 3px rgba(79,163,209,0.1);
-        }
-
-        .form-grupo .dica {
-            font-size: 11px;
-            color: #bbb;
-            margin-top: 6px;
-        }
-
-        /* ── Área de escrita (editor) ── */
-        .editor-wrapper {
-            background: white;
-            border: 1.5px solid #e8e8e8;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .editor-wrapper:focus-within {
-            border-color: var(--cor-primaria);
-            box-shadow: 0 0 0 3px rgba(79,163,209,0.1);
-        }
-
-        .editor-titulo {
-            width: 100%;
-            padding: 28px 32px 8px;
-            border: none;
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--cor-escura);
-            text-align: center;
-            background: transparent;
-            resize: none;
-            outline: none;
-        }
-
+        @keyframes entrar { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .form-grupo { margin-bottom: 24px; }
+        .form-grupo label { display: block; font-size: 12px; font-weight: 500; color: var(--cor-escura); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+        .form-grupo input, .form-grupo select { width: 100%; padding: 14px 18px; border: 1.5px solid #e8e8e8; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--cor-texto); background: white; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        .form-grupo input:focus, .form-grupo select:focus { outline: none; border-color: var(--cor-primaria); box-shadow: 0 0 0 3px rgba(79,163,209,0.1); }
+        .editor-wrapper { background: white; border: 1.5px solid #e8e8e8; border-radius: 16px; overflow: hidden; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        .editor-wrapper:focus-within { border-color: var(--cor-primaria); box-shadow: 0 0 0 3px rgba(79,163,209,0.1); }
+        .editor-titulo { width: 100%; padding: 28px 32px 8px; border: none; font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--cor-escura); text-align: center; background: transparent; resize: none; outline: none; }
         .editor-titulo::placeholder { color: #ccc; font-style: italic; }
-
-        .editor-divisor {
-            height: 1px;
-            background: #f0f0f0;
-            margin: 12px 32px;
-        }
-
-        .editor-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 0 32px 16px;
-            flex-wrap: wrap;
-        }
-
-        .editor-meta-item {
-            font-size: 12px;
-            color: #aaa;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .editor-meta-item span {
-            color: var(--cor-primaria);
-            font-weight: 500;
-        }
-
-        .editor-divisor2 {
-            height: 1px;
-            background: #f0f0f0;
-            margin: 0 32px 20px;
-        }
-
-        .editor-corpo {
-            width: 100%;
-            padding: 0 32px 32px;
-            border: none;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 16px;
-            line-height: 1.9;
-            color: #333;
-            background: transparent;
-            resize: none;
-            outline: none;
-            min-height: 280px;
-        }
-
+        .editor-divisor { height: 1px; background: #f0f0f0; margin: 12px 32px; }
+        .editor-meta { display: flex; align-items: center; gap: 16px; padding: 0 32px 16px; flex-wrap: wrap; }
+        .editor-meta-item { font-size: 12px; color: #aaa; display: flex; align-items: center; gap: 4px; }
+        .editor-meta-item span { color: var(--cor-primaria); font-weight: 500; }
+        .editor-divisor2 { height: 1px; background: #f0f0f0; margin: 0 32px 20px; }
+        .editor-corpo { width: 100%; padding: 0 32px 32px; border: none; font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.9; color: #333; background: transparent; resize: none; outline: none; min-height: 280px; }
         .editor-corpo::placeholder { color: #ccc; }
-
-        .editor-rodape {
-            padding: 12px 32px;
-            border-top: 1px solid #f0f0f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .editor-contador {
-            font-size: 11px;
-            color: #bbb;
-        }
-
-        /* ── Botões de navegação ── */
-        .form-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 32px;
-            gap: 12px;
-        }
-
-        .btn-proximo {
-            padding: 13px 32px;
-            background: var(--cor-primaria);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
-            margin-left: auto;
-        }
-
+        .editor-rodape { padding: 12px 32px; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+        .editor-contador { font-size: 11px; color: #bbb; }
+        .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; gap: 12px; }
+        .btn-proximo { padding: 13px 32px; background: var(--cor-primaria); color: white; border: none; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; margin-left: auto; }
         .btn-proximo:hover { background: #286394; transform: translateY(-2px); }
-
-        .btn-voltar-etapa {
-            padding: 13px 24px;
-            background: white;
-            color: #aaa;
-            border: 1.5px solid #ddd;
-            border-radius: 25px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
+        .btn-proximo:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+        .btn-voltar-etapa { padding: 13px 24px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 15px; cursor: pointer; transition: all 0.3s ease; }
         .btn-voltar-etapa:hover { border-color: #aaa; color: #666; }
-
-        /* ── Mensagem de sucesso ── */
-        .sucesso-page {
-            display: none;
-            text-align: center;
-            padding: 60px 20px;
-            animation: entrar 0.5s ease;
-        }
-
+        .sucesso-page { display: none; text-align: center; padding: 60px 20px; animation: entrar 0.5s ease; }
         .sucesso-page.visivel { display: block; }
         .sucesso-icone { font-size: 72px; margin-bottom: 24px; display: block; }
-
-        .sucesso-page h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            color: var(--cor-escura);
-            margin-bottom: 12px;
-        }
-
-        .sucesso-page p {
-            font-size: 15px;
-            color: #888;
-            margin-bottom: 32px;
-            line-height: 1.7;
-        }
-
-        .sucesso-btns {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-ver { 
-            padding: 13px 28px;
-            background: var(--cor-primaria);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
+        .sucesso-page h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--cor-escura); margin-bottom: 12px; }
+        .sucesso-page p { font-size: 15px; color: #888; margin-bottom: 32px; line-height: 1.7; }
+        .sucesso-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn-ver { padding: 13px 28px; background: var(--cor-primaria); color: white; text-decoration: none; border-radius: 25px; font-size: 14px; font-weight: 500; transition: background 0.3s ease, transform 0.3s ease; }
         .btn-ver:hover { background: #286394; transform: translateY(-2px); }
-
-        .btn-nova-noticia {
-            padding: 13px 28px;
-            background: white;
-            color: var(--cor-escura);
-            border: 1.5px solid #ddd;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
+        .btn-nova-noticia { padding: 13px 28px; background: white; color: var(--cor-escura); border: 1.5px solid #ddd; border-radius: 25px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.3s ease; text-decoration: none; }
         .btn-nova-noticia:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
-
-        @media (max-width: 600px) {
-            .editor-titulo { font-size: 22px; padding: 20px 20px 8px; }
-            .editor-corpo  { padding: 0 20px 20px; }
-            .editor-meta   { padding: 0 20px 12px; }
-            .editor-divisor, .editor-divisor2 { margin: 8px 20px; }
-            .editor-rodape { padding: 12px 20px; }
-        }
+        .status-firebase { font-size: 12px; color: #aaa; text-align: center; margin-top: 12px; }
     </style>
 </head>
 <body>
-
 <header>
     <div class="topo">
-        
+        <img src="logo.png" alt="Logo EMEF Percílio Joaquim da Silveira" class="logo-escola">
         <div class="topo-texto">
             <h1>Jornal da Escola Percílio</h1>
             <p>Informação, eventos e projetos</p>
@@ -347,42 +75,27 @@
 </header>
 
 <main class="publicar-page">
-
-    <!-- Etapas -->
     <div class="etapas" id="etapas">
-        <div class="etapa ativa" id="etapa1">
-            <div class="etapa-num">1</div>
-            <span>Sobre você</span>
-        </div>
+        <div class="etapa ativa" id="etapa1"><div class="etapa-num">1</div><span>Sobre você</span></div>
         <div class="etapa-linha"></div>
-        <div class="etapa" id="etapa2">
-            <div class="etapa-num">2</div>
-            <span>Escrever</span>
-        </div>
+        <div class="etapa" id="etapa2"><div class="etapa-num">2</div><span>Escrever</span></div>
         <div class="etapa-linha"></div>
-        <div class="etapa" id="etapa3">
-            <div class="etapa-num">3</div>
-            <span>Publicar</span>
-        </div>
+        <div class="etapa" id="etapa3"><div class="etapa-num">3</div><span>Publicar</span></div>
     </div>
 
-    <!-- ETAPA 1 — Dados do aluno -->
     <div class="form-secao ativa" id="secao1">
         <div class="secao-header">
             <p class="secao-titulo">Etapa 1</p>
             <h2 class="secao-heading">Quem está <em>escrevendo?</em></h2>
         </div>
-
-        <div class="form-grupo" style="margin-top: 32px;">
+        <div class="form-grupo" style="margin-top:32px;">
             <label for="autorNome">Seu nome completo</label>
             <input type="text" id="autorNome" placeholder="Ex: Maria Silva" maxlength="80">
         </div>
-
         <div class="form-grupo">
-            <label for="autorTurma">Turma <span style="font-weight:300; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+            <label for="autorTurma">Turma <span style="font-weight:300;text-transform:none;letter-spacing:0;">(opcional)</span></label>
             <input type="text" id="autorTurma" placeholder="Ex: 7º A" maxlength="20">
         </div>
-
         <div class="form-grupo">
             <label for="categoriaNoticia">Categoria da notícia</label>
             <select id="categoriaNoticia">
@@ -395,20 +108,17 @@
                 <option value="Outro">Outro</option>
             </select>
         </div>
-
         <div class="form-nav">
             <button class="btn-proximo" id="btnIrEscrever">Próximo → Escrever</button>
         </div>
     </div>
 
-    <!-- ETAPA 2 — Editor de notícia -->
     <div class="form-secao" id="secao2">
         <div class="secao-header">
             <p class="secao-titulo">Etapa 2</p>
             <h2 class="secao-heading">Escreva sua <em>notícia</em></h2>
         </div>
-
-        <div class="editor-wrapper" style="margin-top: 32px;">
+        <div class="editor-wrapper" style="margin-top:32px;">
             <textarea class="editor-titulo" id="tituloNoticia" placeholder="Título da notícia..." maxlength="120" rows="2"></textarea>
             <div class="editor-divisor"></div>
             <div class="editor-meta" id="editorMeta">
@@ -422,23 +132,19 @@
                 <span class="editor-contador" id="contadorChars">0 / 3000 caracteres</span>
             </div>
         </div>
-
         <div class="form-nav">
             <button class="btn-voltar-etapa" id="btnVoltarEtapa1">← Voltar</button>
             <button class="btn-proximo" id="btnIrPublicar">Próximo → Revisar</button>
         </div>
     </div>
 
-    <!-- ETAPA 3 — Revisão e publicação -->
     <div class="form-secao" id="secao3">
         <div class="secao-header">
             <p class="secao-titulo">Etapa 3</p>
             <h2 class="secao-heading">Revise e <em>publique</em></h2>
         </div>
-
-        <!-- Preview final -->
-        <div class="editor-wrapper" style="margin-top: 32px; pointer-events: none;">
-            <div style="padding: 28px 32px 8px; font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--cor-escura); text-align: center;" id="previewTitulo">—</div>
+        <div class="editor-wrapper" style="margin-top:32px;pointer-events:none;">
+            <div style="padding:28px 32px 8px;font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--cor-escura);text-align:center;" id="previewTitulo">—</div>
             <div class="editor-divisor"></div>
             <div class="editor-meta">
                 <span class="editor-meta-item">📅 <span id="previewData"></span></span>
@@ -446,16 +152,15 @@
                 <span class="editor-meta-item">🏷 <span id="previewCategoria">—</span></span>
             </div>
             <div class="editor-divisor2"></div>
-            <div style="padding: 0 32px 32px; font-size: 15px; line-height: 1.9; color: #333; white-space: pre-wrap;" id="previewCorpo">—</div>
+            <div style="padding:0 32px 32px;font-size:15px;line-height:1.9;color:#333;white-space:pre-wrap;" id="previewCorpo">—</div>
         </div>
-
         <div class="form-nav">
             <button class="btn-voltar-etapa" id="btnVoltarEtapa2">← Editar</button>
             <button class="btn-proximo" id="btnPublicar">✅ Publicar notícia</button>
         </div>
+        <p class="status-firebase" id="statusPublicar"></p>
     </div>
 
-    <!-- Sucesso -->
     <div class="sucesso-page" id="sucessoPage">
         <span class="sucesso-icone">🎉</span>
         <h2>Notícia publicada!</h2>
@@ -465,30 +170,43 @@
             <a href="publicar.html" class="btn-nova-noticia">✏️ Escrever outra</a>
         </div>
     </div>
-
 </main>
 
 <footer>
-   
+    <img src="logo.png" alt="Logo EMEF Percílio Joaquim da Silveira" class="logo-footer">
     <p>© 2026 Jornal Escolar</p>
     <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
 </footer>
 
-<script>
-    // ── Elementos ─────────────────────────────────
-    const autorNome       = document.getElementById("autorNome");
-    const autorTurma      = document.getElementById("autorTurma");
-    const categoriaEl     = document.getElementById("categoriaNoticia");
-    const tituloEl        = document.getElementById("tituloNoticia");
-    const conteudoEl      = document.getElementById("conteudoNoticia");
-    const contadorChars   = document.getElementById("contadorChars");
-    const hoje            = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-    // Preenche data
-    document.getElementById("metaData").textContent  = hoje;
+    const firebaseConfig = {
+        apiKey: "AIzaSyC4TOGLUFzZ1o5EmvUH63XiWQA1vDxeqps",
+        authDomain: "jornal-percilio.firebaseapp.com",
+        projectId: "jornal-percilio",
+        storageBucket: "jornal-percilio.firebasestorage.app",
+        messagingSenderId: "88179619322",
+        appId: "1:88179619322:web:fa231bd1eea959fee52043"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
+    const autorNome     = document.getElementById("autorNome");
+    const autorTurma    = document.getElementById("autorTurma");
+    const categoriaEl   = document.getElementById("categoriaNoticia");
+    const tituloEl      = document.getElementById("tituloNoticia");
+    const conteudoEl    = document.getElementById("conteudoNoticia");
+    const contadorChars = document.getElementById("contadorChars");
+    const statusEl      = document.getElementById("statusPublicar");
+    const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+    document.getElementById("metaData").textContent   = hoje;
     document.getElementById("previewData").textContent = hoje;
 
-    // ── Navegação entre etapas ────────────────────
     function irParaSecao(de, para, etapaDe, etapaPara) {
         document.getElementById(de).classList.remove("ativa");
         document.getElementById(para).classList.add("ativa");
@@ -508,7 +226,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Etapa 1 → 2
     document.getElementById("btnIrEscrever").addEventListener("click", () => {
         if (!autorNome.value.trim()) {
             autorNome.focus();
@@ -516,76 +233,61 @@
             setTimeout(() => autorNome.style.borderColor = "", 2000);
             return;
         }
-        // Atualiza meta do editor
         document.getElementById("metaAutor").textContent     = autorNome.value.trim();
         document.getElementById("metaCategoria").textContent = categoriaEl.value;
         irParaSecao("secao1", "secao2", "etapa1", "etapa2");
     });
 
-    // Etapa 2 → 1
     document.getElementById("btnVoltarEtapa1").addEventListener("click", () => {
         voltarParaSecao("secao2", "secao1", "etapa2", "etapa1");
     });
 
-    // Etapa 2 → 3
     document.getElementById("btnIrPublicar").addEventListener("click", () => {
-        if (!tituloEl.value.trim()) {
-            tituloEl.focus();
-            return;
-        }
-        if (!conteudoEl.value.trim()) {
-            conteudoEl.focus();
-            return;
-        }
-        // Preenche preview
-        document.getElementById("previewTitulo").textContent   = tituloEl.value.trim();
-        document.getElementById("previewAutor").textContent    = autorNome.value.trim() || "Anônimo";
+        if (!tituloEl.value.trim()) { tituloEl.focus(); return; }
+        if (!conteudoEl.value.trim()) { conteudoEl.focus(); return; }
+        document.getElementById("previewTitulo").textContent    = tituloEl.value.trim();
+        document.getElementById("previewAutor").textContent     = autorNome.value.trim() || "Anônimo";
         document.getElementById("previewCategoria").textContent = categoriaEl.value;
-        document.getElementById("previewCorpo").textContent    = conteudoEl.value.trim();
+        document.getElementById("previewCorpo").textContent     = conteudoEl.value.trim();
         irParaSecao("secao2", "secao3", "etapa2", "etapa3");
     });
 
-    // Etapa 3 → 2
     document.getElementById("btnVoltarEtapa2").addEventListener("click", () => {
         voltarParaSecao("secao3", "secao2", "etapa3", "etapa2");
     });
 
-    // ── Contador de caracteres ─────────────────────
     conteudoEl.addEventListener("input", () => {
         contadorChars.textContent = `${conteudoEl.value.length} / 3000 caracteres`;
     });
 
-    // ── Publicar ───────────────────────────────────
-    document.getElementById("btnPublicar").addEventListener("click", () => {
-        const noticia = {
-            id:        Date.now(),
-            autor:     autorNome.value.trim(),
-            turma:     autorTurma.value.trim(),
-            titulo:    tituloEl.value.trim(),
-            categoria: categoriaEl.value,
-            conteudo:  conteudoEl.value.trim(),
-            data:      hoje
-        };
+    document.getElementById("btnPublicar").addEventListener("click", async () => {
+        const btn = document.getElementById("btnPublicar");
+        btn.disabled = true;
+        btn.textContent = "Publicando...";
+        statusEl.textContent = "Enviando para o banco de dados...";
 
-        const salvas = JSON.parse(localStorage.getItem("noticias-alunos")) || [];
-        salvas.unshift(noticia);
-        localStorage.setItem("noticias-alunos", JSON.stringify(salvas));
+        try {
+            await addDoc(collection(db, "noticias"), {
+                autor:     autorNome.value.trim(),
+                turma:     autorTurma.value.trim(),
+                titulo:    tituloEl.value.trim(),
+                categoria: categoriaEl.value,
+                conteudo:  conteudoEl.value.trim(),
+                data:      hoje,
+                timestamp: serverTimestamp()
+            });
 
-        document.getElementById("secao3").classList.remove("ativa");
-        document.getElementById("etapas").style.display = "none";
-        document.getElementById("sucessoPage").classList.add("visivel");
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById("secao3").classList.remove("ativa");
+            document.getElementById("etapas").style.display = "none";
+            document.getElementById("sucessoPage").classList.add("visivel");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (erro) {
+            statusEl.textContent = "❌ Erro ao publicar. Verifique sua conexão e tente novamente.";
+            btn.disabled = false;
+            btn.textContent = "✅ Publicar notícia";
+            console.error(erro);
+        }
     });
-
-    // ── Sanitiza (usado no preview via textContent, já seguro) ──
-    function escapeHtml(str) {
-        return String(str || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
-    }
 </script>
-
 </body>
 </html>
