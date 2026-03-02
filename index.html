@@ -32,7 +32,7 @@
             <li><a href="#inicio">Notícias</a></li>
             <li><a href="noticias-alunos.html">📰 Alunos</a></li>
             <li><a href="#galeria">Galeria</a></li>
-            <li><a href="#comentarios">Comentários</a></li>
+            
         </ul>
     </nav>
 </header>
@@ -99,20 +99,7 @@
 </section>
 
 <!-- COMENTÁRIOS -->
-<section id="comentarios" class="comentarios">
-    <div class="secao-header">
-        <p class="secao-titulo">Comunidade</p>
-        <h2 class="secao-heading">O que estão <em>dizendo</em></h2>
-    </div>
 
-    <div id="listaComentarios" class="comentarios-container"></div>
-
-    <form id="formComentario" class="form-comentario">
-        <input type="text" id="nome" placeholder="Seu nome" required maxlength="100">
-        <textarea id="mensagem" placeholder="Escreva seu comentário..." required maxlength="500"></textarea>
-        <button type="submit">Enviar comentário</button>
-    </form>
-</section>
 
 <footer>
     
@@ -129,33 +116,7 @@
         botao.textContent = texto.classList.contains("ativo") ? "Ler menos" : "Ler mais";
     });
 
-    // ─── Comentários (localStorage) ──────────────────────────────
-    const form = document.getElementById("formComentario");
-    const lista = document.getElementById("listaComentarios");
-    const comentariosSalvos = JSON.parse(localStorage.getItem("comentarios")) || [];
-    comentariosSalvos.forEach(c => adicionarComentario(c.nome, c.mensagem));
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const nome = document.getElementById("nome").value.trim();
-        const mensagem = document.getElementById("mensagem").value.trim();
-        if (!nome || !mensagem) return;
-        adicionarComentario(nome, mensagem);
-        const salvos = JSON.parse(localStorage.getItem("comentarios")) || [];
-        salvos.push({ nome, mensagem });
-        localStorage.setItem("comentarios", JSON.stringify(salvos));
-        form.reset();
-    });
-    function adicionarComentario(nome, mensagem) {
-        const div = document.createElement("div");
-        div.classList.add("comentario");
-        const strong = document.createElement("strong");
-        strong.textContent = nome;
-        const p = document.createElement("p");
-        p.textContent = mensagem;
-        div.appendChild(strong);
-        div.appendChild(p);
-        lista.appendChild(div);
-    }
+   
 
     // ─── Menu Burger ──────────────────────────────────────────────
     const toggle = document.querySelector(".menu-toggle");
