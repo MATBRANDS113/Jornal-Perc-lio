@@ -112,7 +112,7 @@ nav {
 /* ── Navegação ───────────────────────────────── */
 nav {
     background: var(--grad-nav);
-    padding: 0;
+    padding: 0px;
     transition: all 0.4s ease;
     overflow: hidden;
     border-top: 1px solid rgba(255,255,255,0.2);
@@ -122,10 +122,11 @@ nav ul {
     display: flex;
     justify-content: center;
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: 0px;
+    margin: 0px;
     gap: 10px;
     flex-wrap: wrap;
+    
 }
 
 nav ul li {
@@ -149,7 +150,7 @@ nav ul li a {
 nav ul li a::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 0px;
     left: -100%;
     width: 100%;
     height: 100%;
@@ -354,6 +355,10 @@ button:hover {
 
 .card-destaque .card-content h3 {
     font-size: 26px;
+}
+
+.grupo-card:not(.aberto) .grupo-membros {
+    max-height: 0 !important;
 }
 
 /* Imagem do card */
@@ -622,7 +627,7 @@ footer a:hover {
 
     nav {
         position: fixed;
-        top: 110px;
+        top: 88px;
         left: 0;
         width: 100%;
         max-height: 0;
@@ -712,7 +717,7 @@ footer a:hover {
 /* ── Responsivo — Mobile (≤ 480px) ──────────── */
 @media (max-width: 480px) {
 
-    nav { top: 160px; }
+    nav { top: 81px; }
 
     .topo h1 { font-size: 24px; }
     .logo-escola { height: 48px; }

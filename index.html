@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .grupos-section { max-width: 1100px; margin: 0 auto; padding: 0 24px 60px; }
-        .grupos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grupos-grid { display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; }
         @media (max-width: 900px) { .grupos-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 560px) { .grupos-grid { grid-template-columns: 1fr; } }
 
@@ -28,9 +29,22 @@
         .grupo-seta { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; z-index: 1; transition: transform 0.35s ease, background 0.3s ease; }
         .grupo-card.aberto .grupo-seta { transform: rotate(180deg); background: var(--cor-primaria); }
 
-        .grupo-membros { max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
-        .grupo-card.aberto .grupo-membros { max-height: 400px; }
-        .grupo-membros-inner { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+        .grupo-membros {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .grupo-card.aberto .grupo-membros {
+            max-height: 400px;
+        }
+
+        .grupo-membros-inner {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
         .membro-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--cor-fundo); text-decoration: none; color: inherit; transition: background 0.25s ease, transform 0.25s ease; border: 1.5px solid transparent; }
         .membro-item:hover { background: #edf5fb; border-color: var(--cor-primaria); transform: translateX(4px); }
