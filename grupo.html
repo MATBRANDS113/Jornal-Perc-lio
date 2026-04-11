@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias do Aluno — Jornal Percílio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .membro-page { max-width: 860px; margin: 50px auto; padding: 0 24px 80px; }
+
+        .membro-hero {
+            background: linear-gradient(135deg, var(--cor-escura), var(--cor-media));
+            border-radius: 20px;
+            padding: 40px 48px;
+            color: white;
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .membro-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.02) 30px, rgba(255,255,255,0.02) 60px);
+        }
+
+        .membro-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: var(--cor-primaria);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; flex-shrink: 0;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.15);
+            z-index: 1;
+        }
+
+        .membro-info { z-index: 1; }
+
+        .membro-info .grupo-label {
+            font-size: 11px; font-weight: 500; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--cor-primaria);
+            background: rgba(79,163,209,0.15); padding: 4px 12px;
+            border-radius: 20px; display: inline-block; margin-bottom: 10px;
+        }
+
+        .membro-info h2 { font-family: 'Playfair Display', serif; font-size: 30px; line-height: 1.2; margin-bottom: 6px; }
+        .membro-info p { font-size: 14px; opacity: 0.7; }
+
+        .lista-membro { display: flex; flex-direction: column; gap: 20px; }
+
+        .noticia-membro {
+            background: white; border-radius: 16px; padding: 28px 32px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--cor-primaria);
+            text-decoration: none; color: inherit; display: block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .noticia-membro:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(14,42,58,0.1); }
+
+        .noticia-membro-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+        .noticia-membro h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--cor-escura); line-height: 1.3; }
+        .noticia-membro-meta { font-size: 12px; color: var(--cor-primaria); font-weight: 500; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .noticia-membro-resumo { font-size: 15px; color: #555; line-height: 1.75; }
+        .noticia-membro-footer { margin-top: 16px; display: flex; justify-content: flex-end; }
+        .btn-ler { font-size: 13px; color: var(--cor-primaria); font-weight: 500; }
+
+        .vazio-membro { text-align: center; padding: 80px 20px; color: #bbb; }
+        .vazio-membro span { font-size: 56px; display: block; margin-bottom: 16px; }
+        .vazio-membro h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: #ccc; margin-bottom: 8px; }
+        .vazio-membro p { font-size: 14px; margin-bottom: 24px; }
+
+        .voltar-grupo {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--cor-suave); font-size: 13px; text-decoration: none;
+            margin-bottom: 32px; transition: color 0.3s;
+        }
+        .voltar-grupo:hover { color: var(--cor-primaria); }
+
+        @media (max-width: 600px) {
+            .membro-hero { padding: 28px 24px; flex-direction: column; text-align: center; }
+            .membro-info h2 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="topo">
+        <div class="topo-texto">
+            <h1>Jornal da Escola Percílio</h1>
+            <p>Informação, eventos e projetos</p>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">← Voltar ao início</a></li>
+            <li><a href="noticias-alunos.html">📰 Ver todas</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="membro-page" id="membroPage">
+    <div style="text-align:center;padding:60px;color:#aaa;">⏳ Carregando...</div>
+</main>
+
+<footer>
+    <p>© 2026 Jornal Escolar</p>
+    <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
+</footer>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC4TOGLUFzZ1o5EmvUH63XiWQA1vDxeqps",
+        authDomain: "jornal-percilio.firebaseapp.com",
+        projectId: "jornal-percilio",
+        storageBucket: "jornal-percilio.firebasestorage.app",
+        messagingSenderId: "88179619322",
+        appId: "1:88179619322:web:fa231bd1eea959fee52043"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const db   = getFirestore(app);
+    const main = document.getElementById("membroPage");
+
+    const params = new URLSearchParams(window.location.search);
+    const autor  = params.get("autor");
+    const grupo  = params.get("grupo");
+
+    function escapeHtml(str) {
+        return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
+    if (!autor) {
+        main.innerHTML = `<div style="text-align:center;padding:80px 20px;">
+            <span style="font-size:56px;">📭</span>
+            <h2 style="font-family:'Playfair Display',serif;margin:16px 0 10px;color:#0E2A3A;">Membro não encontrado</h2>
+            <a href="index.html" style="background:#4FA3D1;color:white;padding:12px 28px;border-radius:25px;text-decoration:none;font-size:14px;">← Voltar</a>
+        </div>`;
+    } else {
+        document.title = `${autor} — Jornal Percílio`;
+
+        try {
+            // Busca tudo e filtra por autor no JS (evita índice composto no Firestore)
+            const q        = query(collection(db, "noticias"), orderBy("timestamp", "desc"));
+            const snapshot = await getDocs(q);
+            const noticias = snapshot.docs
+                .map(d => ({ id: d.id, ...d.data() }))
+                .filter(n => n.autor === autor);
+
+            const publicarUrl = `publicar.html?autor=${encodeURIComponent(autor)}&grupo=${encodeURIComponent(grupo || '')}`;
+
+            let listaHTML = "";
+
+            if (noticias.length === 0) {
+                listaHTML = `<div class="vazio-membro">
+                    <span>📝</span>
+                    <h3>Nenhuma notícia ainda</h3>
+                    <p>${escapeHtml(autor)} ainda não publicou nenhuma notícia.</p>
+                    <a href="${publicarUrl}" class="btn-publicar-mini">✏️ Publicar agora</a>
+                </div>`;
+            } else {
+                listaHTML = `<div class="lista-membro">` + noticias.map(n => {
+                    const resumo = n.conteudo && n.conteudo.length > 160
+                        ? n.conteudo.substring(0, 160).trim() + "..."
+                        : (n.conteudo || "");
+                    const meta = [n.data, n.turma].filter(Boolean).join(" · ");
+                    return `
+                        <a class="noticia-membro" href="noticia.html?id=${n.id}">
+                            <div class="noticia-membro-topo">
+                                <h3>${escapeHtml(n.titulo)}</h3>
+                                <span class="card-tag" style="position:static;display:inline-block;flex-shrink:0;">${escapeHtml(n.categoria)}</span>
+                            </div>
+                            <p class="noticia-membro-meta">${escapeHtml(meta)}</p>
+                            <p class="noticia-membro-resumo">${escapeHtml(resumo)}</p>
+                            <div class="noticia-membro-footer">
+                                <span class="btn-ler">Ler notícia completa →</span>
+                            </div>
+                        </a>`;
+                }).join("") + `</div>`;
+            }
+
+            main.innerHTML = `
+                <a href="index.html#grupos" class="voltar-grupo">← Voltar aos grupos</a>
+                <div class="membro-hero">
+                    <div class="membro-avatar">${autor.trim().charAt(0).toUpperCase()}</div>
+                    <div class="membro-info">
+                        <span class="grupo-label">${escapeHtml(grupo || "Grupo")}</span>
+                        <h2>${escapeHtml(autor)}</h2>
+                        <p>${noticias.length} notícia${noticias.length !== 1 ? 's' : ''} publicada${noticias.length !== 1 ? 's' : ''}</p>
+                    </div>
+                </div>
+                ${listaHTML}
+            `;
+        } catch (e) {
+            main.innerHTML = `<div style="text-align:center;padding:80px 20px;">
+                <span style="font-size:56px;">⚠️</span>
+                <h2 style="font-family:'Playfair Display',serif;margin:16px 0 10px;color:#0E2A3A;">Erro ao carregar</h2>
+                <p style="color:#666;margin-bottom:24px;">Verifique sua conexão e tente novamente.</p>
+                <a href="index.html" style="background:#4FA3D1;color:white;padding:12px 28px;border-radius:25px;text-decoration:none;font-size:14px;">← Voltar</a>
+            </div>`;
+            console.error(e);
+        }
+    }
+</script>
+</body>
+</html>

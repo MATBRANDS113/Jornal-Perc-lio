@@ -4,35 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jornal Escolar 2026</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
+    <style>
+        .grupos-section { max-width: 1100px; margin: 0 auto; padding: 0 24px 60px; }
+        .grupos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        @media (max-width: 900px) { .grupos-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .grupos-grid { grid-template-columns: 1fr; } }
+
+        .grupo-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 2px 20px rgba(0,0,0,0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; border: 1.5px solid transparent; }
+        .grupo-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(14,42,58,0.12); border-color: var(--cor-primaria); }
+        .grupo-card.aberto { border-color: var(--cor-primaria); }
+
+        .grupo-card-header { background: linear-gradient(135deg, var(--cor-escura), var(--cor-media)); padding: 22px 24px; color: white; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; overflow: hidden; }
+        .grupo-card-header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px); }
+        .grupo-card-header-left { z-index: 1; }
+        .grupo-numero { font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--cor-primaria); background: rgba(79,163,209,0.15); padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 6px; }
+        .grupo-card-header h3 { font-family: 'Playfair Display', serif; font-size: 20px; line-height: 1.2; }
+        .grupo-card-header p { font-size: 12px; opacity: 0.65; margin-top: 4px; }
+
+        .grupo-seta { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; z-index: 1; transition: transform 0.35s ease, background 0.3s ease; }
+        .grupo-card.aberto .grupo-seta { transform: rotate(180deg); background: var(--cor-primaria); }
+
+        .grupo-membros { max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+        .grupo-card.aberto .grupo-membros { max-height: 400px; }
+        .grupo-membros-inner { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+
+        .membro-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--cor-fundo); text-decoration: none; color: inherit; transition: background 0.25s ease, transform 0.25s ease; border: 1.5px solid transparent; }
+        .membro-item:hover { background: #edf5fb; border-color: var(--cor-primaria); transform: translateX(4px); }
+
+        .membro-avatar-mini { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--cor-primaria), var(--cor-media)); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; flex-shrink: 0; }
+        .membro-item-info { flex: 1; min-width: 0; }
+        .membro-item-nome { font-size: 14px; font-weight: 500; color: var(--cor-escura); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .membro-item-sub { font-size: 11px; color: var(--cor-suave); margin-top: 2px; }
+        .membro-item-seta { font-size: 13px; color: var(--cor-primaria); opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease; }
+        .membro-item:hover .membro-item-seta { opacity: 1; transform: translateX(3px); }
+    </style>
 </head>
 <body>
 
 <header>
     <div class="topo">
-        
         <div class="topo-texto">
             <h1>Jornal da Escola Percílio</h1>
             <p>Informação, eventos e projetos</p>
         </div>
     </div>
     <div class="menu-toggle" aria-label="Abrir menu" role="button" tabindex="0">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
     <nav>
         <ul>
             <li><a href="#">Início</a></li>
             <li><a href="#inicio">Notícias</a></li>
-            <li><a href="noticias-alunos.html">📰 Alunos</a></li>
+            <li><a href="#grupos">Grupos</a></li>
             <li><a href="#galeria">Galeria</a></li>
-            
         </ul>
     </nav>
 </header>
@@ -44,36 +72,260 @@
         <h2>Gincana Papa-Tampinha movimenta a escola</h2>
         <p>Alunos participaram de atividades ecológicas e arrecadação solidária.</p>
         <div id="texto-extra" class="texto-extra">
-            <p>
-                A gincana incentivou a coleta de tampinhas plásticas para reciclagem,
-                promovendo consciência ambiental e trabalho em equipe entre os alunos.
-            </p>
+            <p>A gincana incentivou a coleta de tampinhas plásticas para reciclagem, promovendo consciência ambiental e trabalho em equipe entre os alunos.</p>
         </div>
         <button id="btnLerMais">Ler mais</button>
     </div>
 </section>
 
 <!-- NOTÍCIAS -->
-<main class="conteudo">
-    <div class="secao-header" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-        <div>
-            <p class="secao-titulo">Notícias</p>
-            <h2 class="secao-heading">O que está <em>acontecendo</em></h2>
+
+
+<!-- GRUPOS -->
+<section id="grupos" class="grupos-section">
+    <div class="secao-header">
+        <p class="secao-titulo">Turma</p>
+        <h2 class="secao-heading">Notícias por <em>grupo</em></h2>
+    </div>
+    <div class="grupos-grid">
+
+        <!-- GRUPO 1 -->
+        <div class="grupo-card" onclick="toggleGrupo(this)">
+            <div class="grupo-card-header">
+                <div class="grupo-card-header-left">
+                    <span class="grupo-numero">Grupo 1</span>
+                    <h3>Interséries Adão Jaime Porto</h3>
+                    <p>3 integrantes</p>
+                </div>
+                <div class="grupo-seta">▾</div>
+            </div>
+            <div class="grupo-membros">
+                <div class="grupo-membros-inner">
+                    <a class="membro-item" href="grupo.html?autor=Matheus Brands&grupo=Grupo 1" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">M</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Matheus Brands</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Emilly&grupo=Grupo 1" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">E</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Emilly</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Diulia&grupo=Grupo 1" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">D</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Diulia</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <a href="publicar.html" class="btn-publicar-mini">✏️ Escrever notícia</a>
-    </div>
 
-    <section class="noticias" id="cardsNoticias">
-        <!-- Cards gerados dinamicamente pelo JavaScript -->
-    </section>
+        <!-- GRUPO 2 -->
+        <div class="grupo-card" onclick="toggleGrupo(this)">
+            <div class="grupo-card-header">
+                <div class="grupo-card-header-left">
+                    <span class="grupo-numero">Grupo 2</span>
+                    <h3>Palestra sobre Bullying</h3>
+                    <p>3 integrantes</p>
+                </div>
+                <div class="grupo-seta">▾</div>
+            </div>
+            <div class="grupo-membros">
+                <div class="grupo-membros-inner">
+                    <a class="membro-item" href="grupo.html?autor=Jakes&grupo=Grupo 2" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">J</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Jakes</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Kauã&grupo=Grupo 2" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">K</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Kauã</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Vinícius&grupo=Grupo 2" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">V</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Vinícius</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-    <div class="noticias-vazio" id="noticiasVazio" style="display:none;">
-        <span>📭</span>
-        <h3>Nenhuma notícia publicada ainda</h3>
-        <p>Seja o primeiro a escrever!</p>
-        <a href="publicar.html" class="btn-publicar-mini">✏️ Escrever notícia</a>
+        <!-- GRUPO 3 -->
+        <div class="grupo-card" onclick="toggleGrupo(this)">
+            <div class="grupo-card-header">
+                <div class="grupo-card-header-left">
+                    <span class="grupo-numero">Grupo 3</span>
+                    <h3>Palestra – Bombeiros</h3>
+                    <p>3 integrantes</p>
+                </div>
+                <div class="grupo-seta">▾</div>
+            </div>
+            <div class="grupo-membros">
+                <div class="grupo-membros-inner">
+                    <a class="membro-item" href="grupo.html?autor=João&grupo=Grupo 3" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">J</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">João</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Maria Eduarda&grupo=Grupo 3" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">M</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Maria Eduarda</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Raíssa&grupo=Grupo 3" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">R</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Raíssa</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRUPO 4 -->
+        <div class="grupo-card" onclick="toggleGrupo(this)">
+            <div class="grupo-card-header">
+                <div class="grupo-card-header-left">
+                    <span class="grupo-numero">Grupo 4</span>
+                    <h3>Palestra – Farmácia vai à escola</h3>
+                    <p>3 integrantes</p>
+                </div>
+                <div class="grupo-seta">▾</div>
+            </div>
+            <div class="grupo-membros">
+                <div class="grupo-membros-inner">
+                    <a class="membro-item" href="grupo.html?autor=Raíssa&grupo=Grupo 4" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">R</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Raíssa</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Maria Eduarda&grupo=Grupo 4" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">M</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Maria Eduarda</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=João&grupo=Grupo 4" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">J</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">João</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRUPO 5 -->
+        <div class="grupo-card" onclick="toggleGrupo(this)">
+            <div class="grupo-card-header">
+                <div class="grupo-card-header-left">
+                    <span class="grupo-numero">Grupo 5</span>
+                    <h3>Cooperativa</h3>
+                    <p>3 integrantes</p>
+                </div>
+                <div class="grupo-seta">▾</div>
+            </div>
+            <div class="grupo-membros">
+                <div class="grupo-membros-inner">
+                    <a class="membro-item" href="grupo.html?autor=Maria Clara&grupo=Grupo 5" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">M</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Maria Clara</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Gabriela&grupo=Grupo 5" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">G</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Gabriela</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Henzo&grupo=Grupo 5" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">H</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Henzo</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRUPO 6 (2 integrantes) -->
+        <div class="grupo-card" onclick="toggleGrupo(this)">
+            <div class="grupo-card-header">
+                <div class="grupo-card-header-left">
+                    <span class="grupo-numero">Grupo 6</span>
+                    <h3>Confraternização de Páscoa</h3>
+                    <p>2 integrantes</p>
+                </div>
+                <div class="grupo-seta">▾</div>
+            </div>
+            <div class="grupo-membros">
+                <div class="grupo-membros-inner">
+                    <a class="membro-item" href="grupo.html?autor=Hannah&grupo=Grupo 6" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">H</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Hannah</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                    <a class="membro-item" href="grupo.html?autor=Francine&grupo=Grupo 6" onclick="event.stopPropagation()">
+                        <div class="membro-avatar-mini">F</div>
+                        <div class="membro-item-info">
+                            <div class="membro-item-nome">Francine</div>
+                            <div class="membro-item-sub">Ver notícia</div>
+                        </div>
+                        <span class="membro-item-seta">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
-</main>
+</section>
+ <div style="text-align:center; margin-top:32px;">
+        <a href="noticias-alunos.html" class="btn-publicar-mini">📰 Ver todas as notícias</a>
+    </div>
 
 <!-- GALERIA -->
 <section id="galeria" class="galeria">
@@ -81,7 +333,6 @@
         <p class="secao-titulo">Galeria</p>
         <h2 class="secao-heading">Momentos <em>marcantes</em></h2>
     </div>
-
     <div class="fotos">
         <div class="foto">
             <div class="foto-bg" style="background-image: url('maxresdefault.jpg');"></div>
@@ -98,17 +349,13 @@
     </div>
 </section>
 
-<!-- COMENTÁRIOS -->
-
-
 <footer>
-    
     <p>© 2026 Jornal Escolar</p>
     <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
 </footer>
 
-<!-- Botão ler mais e menu burger (não usa Firebase) -->
 <script>
+    // Botão ler mais
     const botao = document.getElementById("btnLerMais");
     const texto = document.getElementById("texto-extra");
     botao.addEventListener("click", () => {
@@ -116,12 +363,10 @@
         botao.textContent = texto.classList.contains("ativo") ? "Ler menos" : "Ler mais";
     });
 
-   
-
-    // ─── Menu Burger ──────────────────────────────────────────────
+    // Menu Burger
     const toggle = document.querySelector(".menu-toggle");
-    const nav = document.querySelector("nav");
-    const links = document.querySelectorAll("nav a");
+    const nav    = document.querySelector("nav");
+    const links  = document.querySelectorAll("nav a");
     toggle.addEventListener("click", function () {
         nav.classList.toggle("active");
         toggle.classList.toggle("active");
@@ -134,6 +379,14 @@
             document.body.classList.remove("menu-open");
         });
     });
+
+    // Toggle grupos — fora do module para funcionar com onclick=
+    function toggleGrupo(card) {
+        document.querySelectorAll('.grupo-card.aberto').forEach(c => {
+            if (c !== card) c.classList.remove('aberto');
+        });
+        card.classList.toggle('aberto');
+    }
 </script>
 
 <!-- Firebase — cards de notícias -->
@@ -165,28 +418,24 @@
     const emojis = ["📰","✏️","🌿","⚽","🎨","💡","🎭","📚","🔭","🌍"];
 
     function escapeHtml(str) {
-        return String(str || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
+        return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
 
     async function gerarCards() {
         try {
-            const q = query(collection(db, "noticias"), orderBy("timestamp", "desc"));
+            const q        = query(collection(db, "noticias"), orderBy("timestamp", "desc"));
             const snapshot = await getDocs(q);
             const noticias = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
             if (noticias.length === 0) {
                 cardsContainer.style.display = "none";
-                noticiasVazio.style.display = "flex";
+                noticiasVazio.style.display  = "flex";
                 return;
             }
 
             cardsContainer.style.display = "";
-            noticiasVazio.style.display = "none";
-            cardsContainer.innerHTML = "";
+            noticiasVazio.style.display  = "none";
+            cardsContainer.innerHTML     = "";
 
             noticias.forEach((n, i) => {
                 const grad   = gradientes[i % gradientes.length];
@@ -220,7 +469,7 @@
             });
         } catch (e) {
             cardsContainer.style.display = "none";
-            noticiasVazio.style.display = "flex";
+            noticiasVazio.style.display  = "flex";
             console.error("Erro ao carregar notícias:", e);
         }
     }

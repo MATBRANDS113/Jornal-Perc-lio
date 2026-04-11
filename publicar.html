@@ -25,6 +25,8 @@
         .form-grupo label { display: block; font-size: 12px; font-weight: 500; color: var(--cor-escura); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
         .form-grupo input, .form-grupo select { width: 100%; padding: 14px 18px; border: 1.5px solid #e8e8e8; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--cor-texto); background: white; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
         .form-grupo input:focus, .form-grupo select:focus { outline: none; border-color: var(--cor-primaria); box-shadow: 0 0 0 3px rgba(79,163,209,0.1); }
+        .form-grupo input[readonly] { background: #f5f5f5; color: #999; cursor: not-allowed; }
+        .campo-fixo-aviso { font-size: 11px; color: #aaa; margin-top: 6px; font-style: italic; }
         .editor-wrapper { background: white; border: 1.5px solid #e8e8e8; border-radius: 16px; overflow: hidden; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
         .editor-wrapper:focus-within { border-color: var(--cor-primaria); box-shadow: 0 0 0 3px rgba(79,163,209,0.1); }
         .editor-titulo { width: 100%; padding: 28px 32px 8px; border: none; font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--cor-escura); text-align: center; background: transparent; resize: none; outline: none; }
@@ -60,7 +62,6 @@
 <body>
 <header>
     <div class="topo">
-        
         <div class="topo-texto">
             <h1>Jornal da Escola Percílio</h1>
             <p>Informação, eventos e projetos</p>
@@ -166,19 +167,17 @@
         <h2>Notícia publicada!</h2>
         <p>Sua notícia já está no ar para todos lerem.<br>Obrigado por contribuir com o jornal da escola!</p>
         <div class="sucesso-btns">
-            <a href="noticias-alunos.html" class="btn-ver">📰 Ver todas as notícias</a>
-            <a href="publicar.html" class="btn-nova-noticia">✏️ Escrever outra</a>
+            <a href="noticias-alunos.html" class="btn-ver" id="btnVerNoticia">📰 Ver minha notícia</a>
+            <a href="index.html" class="btn-nova-noticia">← Voltar ao início</a>
         </div>
     </div>
 </main>
 
 <footer>
-    
     <p>© 2026 Jornal Escolar</p>
     <p>Desenvolvido por <a href="https://www.instagram.com/matheus_brands/" target="_blank" rel="noopener noreferrer">Matheus Brands</a></p>
 </footer>
 
-<!-- Firebase -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
@@ -204,9 +203,29 @@
     const statusEl      = document.getElementById("statusPublicar");
     const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    document.getElementById("metaData").textContent   = hoje;
+    document.getElementById("metaData").textContent    = hoje;
     document.getElementById("previewData").textContent = hoje;
 
+    // ── Preenche nome/grupo se vier da URL (clicou no aluno do grupo) ──
+    const urlParams  = new URLSearchParams(window.location.search);
+    const autorParam = urlParams.get("autor");
+    const grupoParam = urlParams.get("grupo");
+
+    if (autorParam) {
+        autorNome.value    = autorParam;
+        autorNome.readOnly = true;
+        const aviso = document.createElement("p");
+        aviso.className   = "campo-fixo-aviso";
+        aviso.textContent = "Nome definido pelo grupo — não é possível alterar.";
+        autorNome.parentElement.appendChild(aviso);
+    }
+
+    if (grupoParam) {
+        autorTurma.value    = grupoParam;
+        autorTurma.readOnly = true;
+    }
+
+    // ── Navegação entre etapas ──
     function irParaSecao(de, para, etapaDe, etapaPara) {
         document.getElementById(de).classList.remove("ativa");
         document.getElementById(para).classList.add("ativa");
@@ -276,6 +295,13 @@
                 data:      hoje,
                 timestamp: serverTimestamp()
             });
+
+            // Se veio do grupo, redireciona de volta para a página do aluno
+            if (autorParam) {
+                document.getElementById("btnVerNoticia").href =
+                    `grupo.html?autor=${encodeURIComponent(autorParam)}&grupo=${encodeURIComponent(grupoParam || '')}`;
+                document.getElementById("btnVerNoticia").textContent = "📰 Ver minha notícia";
+            }
 
             document.getElementById("secao3").classList.remove("ativa");
             document.getElementById("etapas").style.display = "none";
