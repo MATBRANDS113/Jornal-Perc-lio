@@ -198,7 +198,7 @@ nav ul li a:hover {
 
 /* ── Manchete (hero) ─────────────────────────── */
 .manchete {
-    background: url('maxresdefault.jpg') center / cover no-repeat;
+    background: url('jogo.jpeg') center / cover no-repeat;
     height: 420px;
     display: flex;
     align-items: center;
