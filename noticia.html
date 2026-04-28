@@ -9,65 +9,79 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Modal de edição */
+        /* Modal auth */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.visivel { display: flex; }
         .modal { background: white; border-radius: 20px; padding: 36px 40px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
         .modal-icone { font-size: 40px; margin-bottom: 12px; display: block; text-align: center; }
         .modal h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--cor-escura); margin-bottom: 8px; text-align: center; }
-        .modal p { font-size: 13px; color: #888; margin-bottom: 20px; text-align: center; }
+        .modal p { font-size: 13px; color: #888; margin-bottom: 20px; text-align: center; line-height: 1.6; }
         .modal input { width: 100%; padding: 12px 16px; border: 1.5px solid #e0e0e0; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; margin-bottom: 10px; }
         .modal input:focus { outline: none; border-color: var(--cor-primaria); }
         .modal-erro { font-size: 12px; color: #e74c3c; margin-bottom: 12px; min-height: 16px; text-align: center; }
         .modal-btns { display: flex; gap: 10px; justify-content: center; }
-        .btn-confirmar { padding: 11px 24px; background: var(--cor-primaria); color: white; border: none; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.3s; }
+        .btn-confirmar { padding: 11px 24px; background: var(--cor-primaria); color: white; border: none; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; }
         .btn-confirmar:hover { background: #286394; }
-        .btn-cancelar { padding: 11px 24px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.3s; }
+        .btn-cancelar { padding: 11px 24px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; }
         .btn-cancelar:hover { border-color: #aaa; color: #666; }
 
-        /* Editor de edição inline */
-        .editar-wrapper { display: none; margin-top: 24px; }
-        .editar-wrapper.ativo { display: block; }
-        .editar-campo { width: 100%; padding: 14px 18px; border: 1.5px solid #e8e8e8; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--cor-texto); background: white; margin-bottom: 14px; transition: border-color 0.3s; resize: vertical; }
-        .editar-campo:focus { outline: none; border-color: var(--cor-primaria); box-shadow: 0 0 0 3px rgba(79,163,209,0.1); }
-        .editar-titulo-campo { font-family: 'Playfair Display', serif; font-size: 22px; min-height: 60px; }
-        .editar-corpo-campo { min-height: 200px; line-height: 1.8; }
-        .editar-btns { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
-        .btn-salvar-edit { padding: 12px 28px; background: #2ecc71; color: white; border: none; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.3s; }
-        .btn-salvar-edit:hover { background: #27ae60; }
-        .btn-cancelar-edit { padding: 12px 22px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.3s; }
-        .btn-cancelar-edit:hover { border-color: #aaa; color: #666; }
+        /* Lightbox */
+        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 3000; align-items: center; justify-content: center; }
+        .lightbox.visivel { display: flex; }
+        .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; object-fit: contain; }
+        .lightbox-fechar { position: absolute; top: 20px; right: 24px; color: white; font-size: 32px; cursor: pointer; background: none; border: none; line-height: 1; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 36px; cursor: pointer; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+        .lightbox-prev { left: 16px; }
+        .lightbox-next { right: 16px; }
 
-        /* Botão editar flutuante */
-        .btn-editar-noticia { display: inline-flex; align-items: center; gap: 6px; padding: 9px 20px; background: white; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; cursor: pointer; transition: all 0.3s; margin-top: 16px; }
-        .btn-editar-noticia:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
-
-        /* Galeria de fotos na notícia */
+        /* Fotos na notícia */
         .noticia-fotos { margin-top: 36px; }
         .noticia-fotos h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--cor-escura); margin-bottom: 16px; }
         .noticia-fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
         .noticia-fotos-grid img { width: 100%; border-radius: 12px; object-fit: cover; aspect-ratio: 4/3; display: block; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
         .noticia-fotos-grid img:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
 
-        /* Lightbox */
-        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; }
-        .lightbox.visivel { display: flex; }
-        .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; object-fit: contain; }
-        .lightbox-fechar { position: absolute; top: 20px; right: 24px; color: white; font-size: 32px; cursor: pointer; background: none; border: none; line-height: 1; }
-        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 40px; cursor: pointer; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
-        .lightbox-nav:hover { background: rgba(255,255,255,0.25); }
-        .lightbox-prev { left: 16px; }
-        .lightbox-next { right: 16px; }
+        /* Botão editar */
+        .btn-editar-noticia { display: inline-flex; align-items: center; gap: 6px; padding: 9px 20px; background: white; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; cursor: pointer; transition: all 0.3s; margin-top: 16px; }
+        .btn-editar-noticia:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
+
+        /* Editor inline */
+        .editar-wrapper { display: none; margin-top: 24px; background: #f8f9fa; border-radius: 16px; padding: 24px; border: 1.5px solid #e8e8e8; }
+        .editar-wrapper.ativo { display: block; }
+        .editar-campo { width: 100%; padding: 14px 18px; border: 1.5px solid #e8e8e8; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--cor-texto); background: white; margin-bottom: 14px; transition: border-color 0.3s; resize: vertical; }
+        .editar-campo:focus { outline: none; border-color: var(--cor-primaria); box-shadow: 0 0 0 3px rgba(79,163,209,0.1); }
+        .editar-titulo-campo { font-family: 'Playfair Display', serif; font-size: 20px; min-height: 60px; }
+        .editar-corpo-campo { min-height: 200px; line-height: 1.8; }
+
+        /* Fotos no editor */
+        .editar-fotos-label { font-size: 12px; font-weight: 500; color: var(--cor-escura); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .editar-foto-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+        .editar-foto-input { flex: 1; padding: 11px 14px; border: 1.5px solid #e8e8e8; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: white; transition: border-color 0.3s; }
+        .editar-foto-input:focus { outline: none; border-color: var(--cor-primaria); }
+        .editar-foto-preview { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; display: none; border: 1.5px solid #eee; flex-shrink: 0; }
+        .editar-foto-preview.visivel { display: block; }
+        .btn-remover-foto-edit { width: 32px; height: 32px; background: #fee; border: none; border-radius: 50%; color: #e74c3c; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; margin: 0; }
+        .btn-remover-foto-edit:hover { background: #fcc; }
+        .btn-add-foto-edit { padding: 9px 16px; background: white; border: 1.5px solid #e8e8e8; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--cor-suave); cursor: pointer; transition: all 0.3s; margin: 0 0 16px 0; }
+        .btn-add-foto-edit:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
+
+        .editar-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+        .btn-salvar-edit { padding: 12px 28px; background: #2ecc71; color: white; border: none; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.3s; }
+        .btn-salvar-edit:hover { background: #27ae60; }
+        .btn-cancelar-edit { padding: 12px 22px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.3s; margin: 0; }
+        .btn-cancelar-edit:hover { border-color: #aaa; color: #666; }
+        .status-edit { font-size: 12px; color: #aaa; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<!-- Modal de autenticação para editar -->
+<!-- Modal auth -->
 <div class="modal-overlay" id="modalAuth">
     <div class="modal">
         <span class="modal-icone">🔐</span>
         <h3>Verificar identidade</h3>
-        <p>Digite seu nome completo (igual ao publicado) ou a senha da professora.</p>
+        <p>Digite seu nome completo (igual ao publicado) ou a senha da professora para editar.</p>
         <input type="text" id="inputAuth" placeholder="Nome do autor ou senha da professora" maxlength="80">
         <p class="modal-erro" id="erroAuth"></p>
         <div class="modal-btns">
@@ -101,7 +115,7 @@
 </header>
 
 <main class="noticia-page" id="conteudoNoticia">
-    <div style="text-align:center; padding:60px; color:#aaa;">⏳ Carregando notícia...</div>
+    <div style="text-align:center;padding:60px;color:#aaa;">⏳ Carregando notícia...</div>
 </main>
 
 <footer>
@@ -113,6 +127,8 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
     import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
+    const SENHA_PROFESSORA = "percilio2026";
+
     const firebaseConfig = {
         apiKey: "AIzaSyC4TOGLUFzZ1o5EmvUH63XiWQA1vDxeqps",
         authDomain: "jornal-percilio.firebaseapp.com",
@@ -122,12 +138,9 @@
         appId: "1:88179619322:web:fa231bd1eea959fee52043"
     };
 
-    const SENHA_PROFESSORA = "percilio2026";
-
     const app  = initializeApp(firebaseConfig);
     const db   = getFirestore(app);
     const main = document.getElementById("conteudoNoticia");
-
     const params = new URLSearchParams(window.location.search);
     const id     = params.get("id");
 
@@ -135,23 +148,30 @@
         return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
 
-    // Lightbox
-    let fotosLightbox = [];
-    let idxLightbox   = 0;
+    // ── LIGHTBOX ────────────────────────────────────────
+    let fotosArr = [], idxLB = 0;
+    const lb     = document.getElementById("lightbox");
+    const lbImg  = document.getElementById("lightboxImg");
 
-    function abrirLightbox(fotos, idx) {
-        fotosLightbox = fotos;
-        idxLightbox   = idx;
-        document.getElementById("lightboxImg").src = fotos[idx];
-        document.getElementById("lightbox").classList.add("visivel");
-        document.getElementById("lightboxPrev").style.display = fotos.length > 1 ? "" : "none";
-        document.getElementById("lightboxNext").style.display = fotos.length > 1 ? "" : "none";
+    function abrirLB(fotos, idx) {
+        fotosArr = fotos; idxLB = idx;
+        lbImg.src = fotos[idx];
+        lb.classList.add("visivel");
+        const multi = fotos.length > 1;
+        document.getElementById("lightboxPrev").style.display = multi ? "" : "none";
+        document.getElementById("lightboxNext").style.display = multi ? "" : "none";
     }
 
-    document.getElementById("lightboxFechar").addEventListener("click", () => document.getElementById("lightbox").classList.remove("visivel"));
-    document.getElementById("lightbox").addEventListener("click", e => { if (e.target === document.getElementById("lightbox")) document.getElementById("lightbox").classList.remove("visivel"); });
-    document.getElementById("lightboxPrev").addEventListener("click", () => { idxLightbox = (idxLightbox - 1 + fotosLightbox.length) % fotosLightbox.length; document.getElementById("lightboxImg").src = fotosLightbox[idxLightbox]; });
-    document.getElementById("lightboxNext").addEventListener("click", () => { idxLightbox = (idxLightbox + 1) % fotosLightbox.length; document.getElementById("lightboxImg").src = fotosLightbox[idxLightbox]; });
+    document.getElementById("lightboxFechar").onclick = () => lb.classList.remove("visivel");
+    lb.addEventListener("click", e => { if (e.target === lb) lb.classList.remove("visivel"); });
+    document.getElementById("lightboxPrev").onclick = () => { idxLB = (idxLB - 1 + fotosArr.length) % fotosArr.length; lbImg.src = fotosArr[idxLB]; };
+    document.getElementById("lightboxNext").onclick = () => { idxLB = (idxLB + 1) % fotosArr.length; lbImg.src = fotosArr[idxLB]; };
+    document.addEventListener("keydown", e => {
+        if (!lb.classList.contains("visivel")) return;
+        if (e.key === "Escape") lb.classList.remove("visivel");
+        if (e.key === "ArrowLeft")  document.getElementById("lightboxPrev").click();
+        if (e.key === "ArrowRight") document.getElementById("lightboxNext").click();
+    });
 
     if (!id) {
         main.innerHTML = `<div style="text-align:center;padding:80px 20px;">
@@ -182,9 +202,9 @@
                     <div class="noticia-fotos">
                         <h4>📷 Fotos</h4>
                         <div class="noticia-fotos-grid" id="fotosGrid">
-                            ${fotos.map((url, i) => `<img src="${url}" alt="Foto ${i+1}" data-idx="${i}">`).join("")}
+                            ${fotos.map((url, i) => `<img src="${url}" alt="Foto ${i+1}" data-idx="${i}" onerror="this.style.display='none'">`).join("")}
                         </div>
-                    </div>` : "";
+                    </div>` : `<div id="fotosGrid" style="display:none;"></div>`;
 
                 main.innerHTML = `
                     <div class="noticia-header">
@@ -196,18 +216,35 @@
                     <div class="noticia-corpo" id="noticiaCorpo">${paragrafos}</div>
                     ${fotosHTML}
 
-                    <!-- Botão editar -->
                     <button class="btn-editar-noticia" id="btnEditarNoticia">✏️ Editar notícia</button>
 
-                    <!-- Editor inline (aparece após autenticação) -->
+                    <!-- Editor inline -->
                     <div class="editar-wrapper" id="editarWrapper">
+                        <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--cor-escura);margin-bottom:20px;">✏️ Editar notícia</h3>
                         <textarea class="editar-campo editar-titulo-campo" id="editarTitulo">${escapeHtml(n.titulo)}</textarea>
                         <textarea class="editar-campo editar-corpo-campo" id="editarCorpo">${escapeHtml(n.conteudo || "")}</textarea>
+
+                        <span class="editar-fotos-label">📷 Fotos <span style="font-weight:300;text-transform:none;letter-spacing:0;">(links de imagem · até 5)</span></span>
+                        <div id="editarFotosContainer">
+                            ${fotos.length > 0 ? fotos.map(url => `
+                                <div class="editar-foto-row">
+                                    <input type="url" class="editar-foto-input" value="${escapeHtml(url)}" placeholder="https://...">
+                                    <img class="editar-foto-preview visivel" src="${url}" onerror="this.classList.remove('visivel')">
+                                    <button class="btn-remover-foto-edit">✕</button>
+                                </div>`).join("") : `
+                                <div class="editar-foto-row">
+                                    <input type="url" class="editar-foto-input" placeholder="https://... (link da imagem)">
+                                    <img class="editar-foto-preview" src="">
+                                    <button class="btn-remover-foto-edit">✕</button>
+                                </div>`}
+                        </div>
+                        <button class="btn-add-foto-edit" id="btnAddFotoEdit">+ Adicionar foto</button>
+
                         <div class="editar-btns">
                             <button class="btn-salvar-edit" id="btnSalvarEdit">💾 Salvar alterações</button>
                             <button class="btn-cancelar-edit" id="btnCancelarEdit">Cancelar</button>
                         </div>
-                        <p class="status-firebase" id="statusEdit"></p>
+                        <p class="status-edit" id="statusEdit"></p>
                     </div>
 
                     <div style="margin-top:48px;padding-top:24px;border-top:1px solid #eee;display:flex;gap:12px;flex-wrap:wrap;">
@@ -216,17 +253,75 @@
                     </div>
                 `;
 
-                // Lightbox nas fotos
+                // Lightbox
                 if (fotos.length > 0) {
                     document.getElementById("fotosGrid").querySelectorAll("img").forEach(img => {
-                        img.addEventListener("click", () => abrirLightbox(fotos, parseInt(img.dataset.idx)));
+                        img.addEventListener("click", () => abrirLB(fotos, parseInt(img.dataset.idx)));
                     });
                 }
 
-                // ── EDIÇÃO ──────────────────────────────────
-                const modalAuth    = document.getElementById("modalAuth");
-                const inputAuth    = document.getElementById("inputAuth");
-                const erroAuth     = document.getElementById("erroAuth");
+                // ── Configurar rows do editor de fotos ──
+                const editarFotosContainer = document.getElementById("editarFotosContainer");
+
+                function configurarEditRow(row) {
+                    const input   = row.querySelector(".editar-foto-input");
+                    const preview = row.querySelector(".editar-foto-preview");
+                    const btnRem  = row.querySelector(".btn-remover-foto-edit");
+                    let timer;
+                    input.addEventListener("input", () => {
+                        clearTimeout(timer);
+                        preview.classList.remove("visivel");
+                        timer = setTimeout(() => {
+                            const url = input.value.trim();
+                            if (!url) return;
+                            const driveMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                            if (driveMatch) input.value = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+                            preview.src = input.value;
+                            preview.onload  = () => preview.classList.add("visivel");
+                            preview.onerror = () => preview.classList.remove("visivel");
+                        }, 800);
+                    });
+                    btnRem.addEventListener("click", () => {
+                        const rows = editarFotosContainer.querySelectorAll(".editar-foto-row");
+                        if (rows.length === 1) { input.value = ""; preview.classList.remove("visivel"); }
+                        else row.remove();
+                        atualizarBtnAddEdit();
+                    });
+                }
+
+                function atualizarBtnAddEdit() {
+                    const count = editarFotosContainer.querySelectorAll(".editar-foto-row").length;
+                    document.getElementById("btnAddFotoEdit").style.display = count >= 5 ? "none" : "";
+                }
+
+                editarFotosContainer.querySelectorAll(".editar-foto-row").forEach(row => configurarEditRow(row));
+                atualizarBtnAddEdit();
+
+                document.getElementById("btnAddFotoEdit").addEventListener("click", () => {
+                    const count = editarFotosContainer.querySelectorAll(".editar-foto-row").length;
+                    if (count >= 5) return;
+                    const row = document.createElement("div");
+                    row.className = "editar-foto-row";
+                    row.innerHTML = `
+                        <input type="url" class="editar-foto-input" placeholder="https://...">
+                        <img class="editar-foto-preview" src="">
+                        <button class="btn-remover-foto-edit">✕</button>
+                    `;
+                    editarFotosContainer.appendChild(row);
+                    configurarEditRow(row);
+                    atualizarBtnAddEdit();
+                    row.querySelector(".editar-foto-input").focus();
+                });
+
+                function getFotosEdit() {
+                    return Array.from(editarFotosContainer.querySelectorAll(".editar-foto-input"))
+                        .map(i => i.value.trim()).filter(Boolean);
+                }
+
+                // ── AUTH ─────────────────────────────────────
+                const modalAuth = document.getElementById("modalAuth");
+                const inputAuth = document.getElementById("inputAuth");
+                const erroAuth  = document.getElementById("erroAuth");
                 const editarWrapper = document.getElementById("editarWrapper");
 
                 document.getElementById("btnEditarNoticia").addEventListener("click", () => {
@@ -236,10 +331,9 @@
                     setTimeout(() => inputAuth.focus(), 100);
                 });
 
-                document.getElementById("btnCancelarAuth").addEventListener("click", () => modalAuth.classList.remove("visivel"));
+                document.getElementById("btnCancelarAuth").onclick = () => modalAuth.classList.remove("visivel");
                 modalAuth.addEventListener("click", e => { if (e.target === modalAuth) modalAuth.classList.remove("visivel"); });
-
-                document.getElementById("btnConfirmarAuth").addEventListener("click", verificarAuth);
+                document.getElementById("btnConfirmarAuth").onclick = verificarAuth;
                 inputAuth.addEventListener("keydown", e => { if (e.key === "Enter") verificarAuth(); });
 
                 function verificarAuth() {
@@ -250,7 +344,7 @@
                         document.getElementById("btnEditarNoticia").style.display = "none";
                         document.getElementById("editarTitulo").focus();
                     } else {
-                        erroAuth.textContent = "Nome incorreto. Digite exatamente como está na notícia.";
+                        erroAuth.textContent = "Incorreto. Digite seu nome exatamente como está na notícia.";
                         inputAuth.value = "";
                         inputAuth.focus();
                     }
@@ -261,34 +355,56 @@
                     document.getElementById("btnEditarNoticia").style.display = "";
                 });
 
+                // ── SALVAR EDIÇÃO ─────────────────────────────
                 document.getElementById("btnSalvarEdit").addEventListener("click", async () => {
-                    const btnSalvar = document.getElementById("btnSalvarEdit");
+                    const btn        = document.getElementById("btnSalvarEdit");
                     const statusEdit = document.getElementById("statusEdit");
-                    const novoTitulo  = document.getElementById("editarTitulo").value.trim();
-                    const novoCorpo   = document.getElementById("editarCorpo").value.trim();
+                    const novoTitulo = document.getElementById("editarTitulo").value.trim();
+                    const novoCorpo  = document.getElementById("editarCorpo").value.trim();
+                    const novasFotos = getFotosEdit();
 
                     if (!novoTitulo || !novoCorpo) {
                         statusEdit.textContent = "⚠️ Título e texto não podem estar vazios.";
                         return;
                     }
 
-                    btnSalvar.disabled = true;
-                    btnSalvar.textContent = "Salvando...";
+                    btn.disabled = true;
+                    btn.textContent = "Salvando...";
                     statusEdit.textContent = "";
 
                     try {
-                        await updateDoc(docRef, { titulo: novoTitulo, conteudo: novoCorpo });
+                        await updateDoc(docRef, { titulo: novoTitulo, conteudo: novoCorpo, fotos: novasFotos });
 
-                        // Atualiza na tela sem recarregar
+                        // Atualiza na tela
                         document.getElementById("noticiaTitle").textContent = novoTitulo;
                         document.getElementById("noticiaCorpo").innerHTML = novoCorpo.split("\n").map(p => p.trim() ? `<p>${escapeHtml(p)}</p>` : "").join("");
                         document.title = `${novoTitulo} — Jornal Percílio`;
 
+                        // Atualiza galeria de fotos
+                        const fotosGrid = document.getElementById("fotosGrid");
+                        if (novasFotos.length > 0) {
+                            fotosGrid.style.display = "";
+                            const parent = fotosGrid.closest(".noticia-fotos") || fotosGrid.parentElement;
+                            if (!fotosGrid.closest(".noticia-fotos")) {
+                                const wrap = document.createElement("div");
+                                wrap.className = "noticia-fotos";
+                                wrap.innerHTML = "<h4>📷 Fotos</h4>";
+                                wrap.appendChild(fotosGrid);
+                                document.getElementById("noticiaCorpo").insertAdjacentElement("afterend", wrap);
+                            }
+                            fotosGrid.innerHTML = novasFotos.map((url, i) =>
+                                `<img src="${url}" alt="Foto ${i+1}" data-idx="${i}" onerror="this.style.display='none'">`
+                            ).join("");
+                            fotosGrid.querySelectorAll("img").forEach(img => {
+                                img.addEventListener("click", () => abrirLB(novasFotos, parseInt(img.dataset.idx)));
+                            });
+                        } else {
+                            fotosGrid.innerHTML = "";
+                        }
+
                         editarWrapper.classList.remove("ativo");
                         document.getElementById("btnEditarNoticia").style.display = "";
-                        statusEdit.textContent = "";
 
-                        // Feedback
                         const ok = document.createElement("p");
                         ok.style.cssText = "color:#2ecc71;font-size:13px;margin-top:8px;";
                         ok.textContent = "✅ Notícia atualizada com sucesso!";
@@ -299,8 +415,8 @@
                         statusEdit.textContent = "❌ Erro ao salvar. Tente novamente.";
                         console.error(e);
                     } finally {
-                        btnSalvar.disabled = false;
-                        btnSalvar.textContent = "💾 Salvar alterações";
+                        btn.disabled = false;
+                        btn.textContent = "💾 Salvar alterações";
                     }
                 });
             }

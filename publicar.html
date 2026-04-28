@@ -39,22 +39,24 @@
         .editor-divisor2 { height: 1px; background: #f0f0f0; margin: 0 32px 20px; }
         .editor-corpo { width: 100%; padding: 0 32px 32px; border: none; font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.9; color: #333; background: transparent; resize: none; outline: none; min-height: 280px; }
         .editor-corpo::placeholder { color: #ccc; }
-        .editor-rodape { padding: 12px 32px; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .editor-rodape { padding: 12px 32px; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
         .editor-contador { font-size: 11px; color: #bbb; }
 
-        /* Fotos */
-        .fotos-upload-area { padding: 0 32px 24px; }
-        .fotos-upload-label { font-size: 12px; font-weight: 500; color: var(--cor-escura); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; display: block; }
-        .fotos-drop { border: 2px dashed #dde; border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #fafafa; }
-        .fotos-drop:hover, .fotos-drop.drag { border-color: var(--cor-primaria); background: #f0f8ff; }
-        .fotos-drop p { font-size: 13px; color: #aaa; margin-top: 8px; }
-        .fotos-drop input[type="file"] { display: none; }
-        .fotos-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 14px; }
-        .foto-thumb { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 1; background: #eee; }
-        .foto-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .foto-thumb-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; margin: 0; }
-        .foto-thumb-remove:hover { background: #e74c3c; }
-        .fotos-contador { font-size: 11px; color: #aaa; margin-top: 6px; }
+        /* Fotos por link */
+        .fotos-section { padding: 0 32px 24px; }
+        .fotos-section-label { font-size: 12px; font-weight: 500; color: var(--cor-escura); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; display: block; }
+        .fotos-dica { font-size: 12px; color: #aaa; margin-bottom: 14px; line-height: 1.6; background: #f8f9fa; border-radius: 10px; padding: 10px 14px; }
+        .fotos-dica a { color: var(--cor-primaria); text-decoration: none; }
+        .foto-link-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+        .foto-link-input { flex: 1; padding: 11px 14px; border: 1.5px solid #e8e8e8; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--cor-texto); transition: border-color 0.3s; }
+        .foto-link-input:focus { outline: none; border-color: var(--cor-primaria); }
+        .foto-link-input.erro { border-color: #e74c3c; }
+        .foto-link-preview { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; display: none; border: 1.5px solid #eee; flex-shrink: 0; }
+        .foto-link-preview.visivel { display: block; }
+        .btn-add-foto { padding: 11px 16px; background: var(--cor-fundo); border: 1.5px solid #e8e8e8; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--cor-suave); cursor: pointer; transition: all 0.3s; white-space: nowrap; margin: 0; }
+        .btn-add-foto:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
+        .btn-remover-foto { width: 32px; height: 32px; background: #fee; border: none; border-radius: 50%; color: #e74c3c; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; margin: 0; transition: background 0.3s; }
+        .btn-remover-foto:hover { background: #fcc; }
 
         /* Rascunho */
         .rascunho-bar { background: #fff8e1; border: 1.5px solid #ffe082; border-radius: 12px; padding: 12px 18px; margin-bottom: 24px; display: none; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -64,20 +66,19 @@
         .btn-rascunho { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 500; border: none; transition: all 0.3s; }
         .btn-rascunho.carregar { background: var(--cor-primaria); color: white; }
         .btn-rascunho.descartar { background: white; color: #aaa; border: 1.5px solid #ddd; }
-        .btn-rascunho:hover { opacity: 0.85; }
 
         .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; gap: 12px; flex-wrap: wrap; }
         .btn-proximo { padding: 13px 32px; background: var(--cor-primaria); color: white; border: none; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; margin-left: auto; }
         .btn-proximo:hover { background: #286394; transform: translateY(-2px); }
         .btn-proximo:disabled { background: #aaa; cursor: not-allowed; transform: none; }
-        .btn-salvar-rascunho { padding: 13px 20px; background: white; color: #856404; border: 1.5px solid #ffe082; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-salvar-rascunho { padding: 13px 20px; background: white; color: #856404; border: 1.5px solid #ffe082; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.3s ease; margin: 0; }
         .btn-salvar-rascunho:hover { background: #fff8e1; }
-        .btn-voltar-etapa { padding: 13px 24px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 15px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-voltar-etapa { padding: 13px 24px; background: white; color: #aaa; border: 1.5px solid #ddd; border-radius: 25px; font-family: 'DM Sans', sans-serif; font-size: 15px; cursor: pointer; transition: all 0.3s ease; margin: 0; }
         .btn-voltar-etapa:hover { border-color: #aaa; color: #666; }
 
-        /* Preview fotos na etapa 3 */
-        .preview-fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin: 16px 32px 0; }
-        .preview-fotos img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; display: block; }
+        /* Preview fotos etapa 3 */
+        .preview-fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin: 16px 32px 8px; }
+        .preview-fotos-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; display: block; }
 
         .sucesso-page { display: none; text-align: center; padding: 60px 20px; animation: entrar 0.5s ease; }
         .sucesso-page.visivel { display: block; }
@@ -90,8 +91,6 @@
         .btn-nova-noticia { padding: 13px 28px; background: white; color: var(--cor-escura); border: 1.5px solid #ddd; border-radius: 25px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.3s ease; text-decoration: none; }
         .btn-nova-noticia:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
         .status-firebase { font-size: 12px; color: #aaa; text-align: center; margin-top: 12px; }
-
-        .upload-progress { margin-top: 12px; font-size: 12px; color: var(--cor-primaria); text-align: center; min-height: 18px; }
     </style>
 </head>
 <body>
@@ -177,17 +176,21 @@
             <textarea class="editor-corpo" id="conteudoNoticia" placeholder="Escreva o texto da sua notícia aqui..." maxlength="3000"></textarea>
             <div class="editor-divisor"></div>
 
-            <!-- UPLOAD DE FOTOS -->
-            <div class="fotos-upload-area">
-                <span class="fotos-upload-label">📷 Fotos <span style="font-weight:300;text-transform:none;letter-spacing:0;">(até 5 imagens)</span></span>
-                <div class="fotos-drop" id="fotosDrop" onclick="document.getElementById('fotosInput').click()">
-                    <div style="font-size:32px;">🖼️</div>
-                    <p>Clique ou arraste fotos aqui</p>
-                    <p style="font-size:11px;margin-top:4px;">JPG, PNG ou WEBP · Máx. 5MB cada</p>
-                    <input type="file" id="fotosInput" accept="image/*" multiple>
+            <!-- FOTOS POR LINK -->
+            <div class="fotos-section">
+                <span class="fotos-section-label">📷 Fotos <span style="font-weight:300;text-transform:none;letter-spacing:0;">(opcional · até 5)</span></span>
+                <div class="fotos-dica">
+                    💡 Cole o link direto de uma imagem. No <strong>Google Drive</strong>: clique com botão direito na foto → "Compartilhar" → "Qualquer pessoa com o link" → copie e cole aqui.<br>
+                    No <strong>Google Fotos</strong>: abra a foto → compartilhar → "Criar link".
                 </div>
-                <div class="fotos-preview" id="fotosPreview"></div>
-                <p class="fotos-contador" id="fotosContador">0 / 5 fotos selecionadas</p>
+                <div id="fotosLinksContainer">
+                    <div class="foto-link-row">
+                        <input type="url" class="foto-link-input" placeholder="https://... (link da imagem)" maxlength="500">
+                        <img class="foto-link-preview" src="" alt="preview">
+                        <button class="btn-remover-foto" title="Remover">✕</button>
+                    </div>
+                </div>
+                <button class="btn-add-foto" id="btnAddFoto">+ Adicionar outra foto</button>
             </div>
 
             <div class="editor-rodape">
@@ -216,11 +219,10 @@
                 <span class="editor-meta-item">🏷 <span id="previewCategoria">—</span></span>
             </div>
             <div class="editor-divisor2"></div>
-            <div style="padding:0 32px 24px;font-size:15px;line-height:1.9;color:#333;white-space:pre-wrap;" id="previewCorpo">—</div>
-            <div class="preview-fotos" id="previewFotos"></div>
+            <div style="padding:0 32px 16px;font-size:15px;line-height:1.9;color:#333;white-space:pre-wrap;" id="previewCorpo">—</div>
+            <div class="preview-fotos-grid" id="previewFotosGrid"></div>
             <div style="padding-bottom:16px;"></div>
         </div>
-        <div class="upload-progress" id="uploadProgress"></div>
         <div class="form-nav">
             <button class="btn-voltar-etapa" id="btnVoltarEtapa2">← Editar</button>
             <button class="btn-proximo" id="btnPublicar">✅ Publicar notícia</button>
@@ -248,7 +250,6 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyC4TOGLUFzZ1o5EmvUH63XiWQA1vDxeqps",
@@ -259,11 +260,9 @@
         appId: "1:88179619322:web:fa231bd1eea959fee52043"
     };
 
-    const app     = initializeApp(firebaseConfig);
-    const db      = getFirestore(app);
-    const storage = getStorage(app);
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
 
-    // Elementos
     const autorNome     = document.getElementById("autorNome");
     const autorTurma    = document.getElementById("autorTurma");
     const categoriaEl   = document.getElementById("categoriaNoticia");
@@ -271,11 +270,7 @@
     const conteudoEl    = document.getElementById("conteudoNoticia");
     const contadorChars = document.getElementById("contadorChars");
     const statusEl      = document.getElementById("statusPublicar");
-    const uploadProgress = document.getElementById("uploadProgress");
-    const fotosDrop     = document.getElementById("fotosDrop");
-    const fotosInput    = document.getElementById("fotosInput");
-    const fotosPreview  = document.getElementById("fotosPreview");
-    const fotosContador = document.getElementById("fotosContador");
+    const container     = document.getElementById("fotosLinksContainer");
 
     const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
     document.getElementById("metaData").textContent    = hoje;
@@ -299,38 +294,137 @@
         autorTurma.readOnly = true;
     }
 
+    // ── FOTOS POR LINK ──────────────────────────────────
+    function configurarRow(row) {
+        const input   = row.querySelector(".foto-link-input");
+        const preview = row.querySelector(".foto-link-preview");
+        const btnRem  = row.querySelector(".btn-remover-foto");
+
+        // Preview ao colar/digitar link
+        let timer;
+        input.addEventListener("input", () => {
+            clearTimeout(timer);
+            input.classList.remove("erro");
+            preview.classList.remove("visivel");
+            timer = setTimeout(() => {
+                const url = input.value.trim();
+                if (!url) return;
+                // Converte link do Google Drive para link direto
+                const driveMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (driveMatch) {
+                    input.value = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+                }
+                preview.src = input.value;
+                preview.onload  = () => preview.classList.add("visivel");
+                preview.onerror = () => { preview.classList.remove("visivel"); input.classList.add("erro"); };
+            }, 800);
+        });
+
+        btnRem.addEventListener("click", () => {
+            const rows = container.querySelectorAll(".foto-link-row");
+            if (rows.length === 1) {
+                input.value = "";
+                preview.classList.remove("visivel");
+                input.classList.remove("erro");
+            } else {
+                row.remove();
+                atualizarBtnAdd();
+            }
+        });
+    }
+
+    function atualizarBtnAdd() {
+        const count = container.querySelectorAll(".foto-link-row").length;
+        document.getElementById("btnAddFoto").style.display = count >= 5 ? "none" : "";
+    }
+
+    document.getElementById("btnAddFoto").addEventListener("click", () => {
+        const count = container.querySelectorAll(".foto-link-row").length;
+        if (count >= 5) return;
+        const row = document.createElement("div");
+        row.className = "foto-link-row";
+        row.innerHTML = `
+            <input type="url" class="foto-link-input" placeholder="https://... (link da imagem)" maxlength="500">
+            <img class="foto-link-preview" src="" alt="preview">
+            <button class="btn-remover-foto" title="Remover">✕</button>
+        `;
+        container.appendChild(row);
+        configurarRow(row);
+        atualizarBtnAdd();
+        row.querySelector(".foto-link-input").focus();
+    });
+
+    // Configura a primeira row
+    configurarRow(container.querySelector(".foto-link-row"));
+
+    function getFotosLinks() {
+        return Array.from(container.querySelectorAll(".foto-link-input"))
+            .map(i => i.value.trim())
+            .filter(Boolean);
+    }
+
     // ── RASCUNHO ────────────────────────────────────────
     const RASCUNHO_KEY = "jornal_rascunho" + (autorParam ? "_" + autorParam : "");
 
     function verificarRascunho() {
-        const r = localStorage.getItem(RASCUNHO_KEY);
-        if (r) document.getElementById("rascunhoBar").classList.add("visivel");
+        if (localStorage.getItem(RASCUNHO_KEY))
+            document.getElementById("rascunhoBar").classList.add("visivel");
     }
 
     function salvarRascunho() {
-        const dados = {
+        localStorage.setItem(RASCUNHO_KEY, JSON.stringify({
             autor:     autorNome.value,
             turma:     autorTurma.value,
             categoria: categoriaEl.value,
             titulo:    tituloEl.value,
             conteudo:  conteudoEl.value,
-            savedAt:   new Date().toLocaleTimeString('pt-BR')
-        };
-        localStorage.setItem(RASCUNHO_KEY, JSON.stringify(dados));
-        document.getElementById("btnSalvarRascunho").textContent = "✅ Rascunho salvo!";
-        setTimeout(() => document.getElementById("btnSalvarRascunho").textContent = "💾 Salvar rascunho", 2000);
+            fotos:     getFotosLinks()
+        }));
+        const btn = document.getElementById("btnSalvarRascunho");
+        btn.textContent = "✅ Salvo!";
+        setTimeout(() => btn.textContent = "💾 Salvar rascunho", 2000);
     }
 
     function carregarRascunho() {
         const r = localStorage.getItem(RASCUNHO_KEY);
         if (!r) return;
-        const dados = JSON.parse(r);
-        if (!autorParam && dados.autor) autorNome.value = dados.autor;
-        if (!grupoParam && dados.turma) autorTurma.value = dados.turma;
-        if (dados.categoria) categoriaEl.value = dados.categoria;
-        if (dados.titulo)    tituloEl.value    = dados.titulo;
-        if (dados.conteudo)  conteudoEl.value  = dados.conteudo;
+        const d = JSON.parse(r);
+        if (!autorParam && d.autor) autorNome.value = d.autor;
+        if (!grupoParam && d.turma) autorTurma.value = d.turma;
+        if (d.categoria) categoriaEl.value = d.categoria;
+        if (d.titulo)    tituloEl.value    = d.titulo;
+        if (d.conteudo)  conteudoEl.value  = d.conteudo;
         contadorChars.textContent = `${conteudoEl.value.length} / 3000 caracteres`;
+        // Carrega fotos
+        if (d.fotos && d.fotos.length > 0) {
+            container.innerHTML = "";
+            d.fotos.forEach(url => {
+                const row = document.createElement("div");
+                row.className = "foto-link-row";
+                row.innerHTML = `
+                    <input type="url" class="foto-link-input" placeholder="https://..." maxlength="500" value="${url}">
+                    <img class="foto-link-preview" src="${url}" alt="preview">
+                    <button class="btn-remover-foto" title="Remover">✕</button>
+                `;
+                container.appendChild(row);
+                const preview = row.querySelector(".foto-link-preview");
+                preview.onload = () => preview.classList.add("visivel");
+                configurarRow(row);
+            });
+            // Garante pelo menos uma row vazia se tiver espaço
+            if (d.fotos.length < 5) {
+                const row = document.createElement("div");
+                row.className = "foto-link-row";
+                row.innerHTML = `
+                    <input type="url" class="foto-link-input" placeholder="https://..." maxlength="500">
+                    <img class="foto-link-preview" src="" alt="preview">
+                    <button class="btn-remover-foto" title="Remover">✕</button>
+                `;
+                container.appendChild(row);
+                configurarRow(row);
+            }
+            atualizarBtnAdd();
+        }
         document.getElementById("rascunhoBar").classList.remove("visivel");
     }
 
@@ -342,54 +436,6 @@
     });
 
     verificarRascunho();
-
-    // ── FOTOS ────────────────────────────────────────────
-    let arquivosSelecionados = [];
-
-    function atualizarPreviewFotos() {
-        fotosPreview.innerHTML = "";
-        fotosContador.textContent = `${arquivosSelecionados.length} / 5 fotos selecionadas`;
-        arquivosSelecionados.forEach((file, idx) => {
-            const url  = URL.createObjectURL(file);
-            const div  = document.createElement("div");
-            div.className = "foto-thumb";
-            div.innerHTML = `<img src="${url}"><button class="foto-thumb-remove" data-idx="${idx}">✕</button>`;
-            fotosPreview.appendChild(div);
-        });
-        fotosPreview.querySelectorAll(".foto-thumb-remove").forEach(btn => {
-            btn.addEventListener("click", e => {
-                e.stopPropagation();
-                arquivosSelecionados.splice(parseInt(btn.dataset.idx), 1);
-                atualizarPreviewFotos();
-            });
-        });
-    }
-
-    fotosInput.addEventListener("change", () => {
-        const novos = Array.from(fotosInput.files);
-        const total = arquivosSelecionados.length + novos.length;
-        if (total > 5) {
-            alert("Máximo de 5 fotos por notícia.");
-            return;
-        }
-        novos.forEach(f => {
-            if (f.size > 5 * 1024 * 1024) { alert(`A foto "${f.name}" é maior que 5MB.`); return; }
-            arquivosSelecionados.push(f);
-        });
-        atualizarPreviewFotos();
-        fotosInput.value = "";
-    });
-
-    fotosDrop.addEventListener("dragover", e => { e.preventDefault(); fotosDrop.classList.add("drag"); });
-    fotosDrop.addEventListener("dragleave", () => fotosDrop.classList.remove("drag"));
-    fotosDrop.addEventListener("drop", e => {
-        e.preventDefault();
-        fotosDrop.classList.remove("drag");
-        const novos = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith("image/"));
-        if (arquivosSelecionados.length + novos.length > 5) { alert("Máximo de 5 fotos."); return; }
-        novos.forEach(f => arquivosSelecionados.push(f));
-        atualizarPreviewFotos();
-    });
 
     // ── NAVEGAÇÃO ────────────────────────────────────────
     function irParaSecao(de, para, etapaDe, etapaPara) {
@@ -423,9 +469,7 @@
         irParaSecao("secao1", "secao2", "etapa1", "etapa2");
     });
 
-    document.getElementById("btnVoltarEtapa1").addEventListener("click", () => {
-        voltarParaSecao("secao2", "secao1", "etapa2", "etapa1");
-    });
+    document.getElementById("btnVoltarEtapa1").addEventListener("click", () => voltarParaSecao("secao2", "secao1", "etapa2", "etapa1"));
 
     document.getElementById("btnIrPublicar").addEventListener("click", () => {
         if (!tituloEl.value.trim())   { tituloEl.focus(); return; }
@@ -437,20 +481,20 @@
         document.getElementById("previewCorpo").textContent     = conteudoEl.value.trim();
 
         // Preview fotos
-        const pf = document.getElementById("previewFotos");
-        pf.innerHTML = "";
-        arquivosSelecionados.forEach(f => {
+        const grid = document.getElementById("previewFotosGrid");
+        grid.innerHTML = "";
+        getFotosLinks().forEach(url => {
             const img = document.createElement("img");
-            img.src = URL.createObjectURL(f);
-            pf.appendChild(img);
+            img.src = url;
+            img.style.cssText = "width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;";
+            img.onerror = () => img.remove();
+            grid.appendChild(img);
         });
 
         irParaSecao("secao2", "secao3", "etapa2", "etapa3");
     });
 
-    document.getElementById("btnVoltarEtapa2").addEventListener("click", () => {
-        voltarParaSecao("secao3", "secao2", "etapa3", "etapa2");
-    });
+    document.getElementById("btnVoltarEtapa2").addEventListener("click", () => voltarParaSecao("secao3", "secao2", "etapa3", "etapa2"));
 
     conteudoEl.addEventListener("input", () => {
         contadorChars.textContent = `${conteudoEl.value.length} / 3000 caracteres`;
@@ -464,53 +508,31 @@
         statusEl.textContent = "";
 
         try {
-            // 1. Upload das fotos
-            const fotosUrls = [];
-            if (arquivosSelecionados.length > 0) {
-                uploadProgress.textContent = `📤 Enviando fotos (0/${arquivosSelecionados.length})...`;
-                for (let i = 0; i < arquivosSelecionados.length; i++) {
-                    const file     = arquivosSelecionados[i];
-                    const nomeArq  = `noticias/${Date.now()}_${i}_${file.name.replace(/\s/g, "_")}`;
-                    const storRef  = ref(storage, nomeArq);
-                    await uploadBytes(storRef, file);
-                    const url = await getDownloadURL(storRef);
-                    fotosUrls.push(url);
-                    uploadProgress.textContent = `📤 Enviando fotos (${i+1}/${arquivosSelecionados.length})...`;
-                }
-                uploadProgress.textContent = "✅ Fotos enviadas!";
-            }
-
-            // 2. Salva no Firestore
-            const docRef = await addDoc(collection(db, "noticias"), {
+            await addDoc(collection(db, "noticias"), {
                 autor:     autorNome.value.trim(),
                 turma:     autorTurma.value.trim(),
                 titulo:    tituloEl.value.trim(),
                 categoria: categoriaEl.value,
                 conteudo:  conteudoEl.value.trim(),
-                fotos:     fotosUrls,
+                fotos:     getFotosLinks(),
                 data:      hoje,
                 timestamp: serverTimestamp()
             });
 
-            // 3. Limpa rascunho
             localStorage.removeItem(RASCUNHO_KEY);
 
-            // 4. Ajusta botão de sucesso se veio do grupo
             if (autorParam) {
                 const linkVer = document.getElementById("btnVerNoticia");
                 linkVer.href = `grupo.html?autor=${encodeURIComponent(autorParam)}&grupo=${encodeURIComponent(grupoParam || '')}`;
                 linkVer.textContent = "📰 Ver minha notícia";
             }
 
-            uploadProgress.textContent = "";
             document.getElementById("secao3").classList.remove("ativa");
             document.getElementById("etapas").style.display = "none";
             document.getElementById("sucessoPage").classList.add("visivel");
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
         } catch (erro) {
             statusEl.textContent = "❌ Erro ao publicar. Verifique sua conexão e tente novamente.";
-            uploadProgress.textContent = "";
             btn.disabled = false;
             btn.textContent = "✅ Publicar notícia";
             console.error(erro);
